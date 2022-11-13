@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox fx:controller="at.ac.fhcampuswien.snake.controller.SnakeController"
+      xmlns:fx="http://javafx.com/fxml">
+    <VBox>
+        <MenuBar>
+            <Menu text="Menu">
+                <MenuItem text="About" onAction="#showInfoDialog"/>
+                <MenuItem text="Exit" onAction="#onExitButtonClick"/>
+            </Menu>
+        </MenuBar>
+        <ImageView fx:id="logo"/>
+    </VBox>
+
+    <VBox>
+        <padding>
+            <Insets left="10"/>
+        </padding>
+        <Label fx:id="textBox"/>
+    </VBox>
+
+    <GridPane alignment="CENTER" hgap="10">
+        <padding>
+            <Insets bottom="2"/>
+        </padding>
+        <Button text="Click me!" onAction="#onImplementMeButtonClick"
+                GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+        <Button text="Exit" onAction="#onExitButtonClick"
+                GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
+    </GridPane>
+</VBox>
