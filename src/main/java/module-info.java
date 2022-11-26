@@ -1,6 +1,7 @@
 module at.ac.fhcampuswien.snake {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.slf4j;
 
 
     opens at.ac.fhcampuswien.snake to javafx.fxml;

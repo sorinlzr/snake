@@ -6,8 +6,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SnakeController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SnakeController.class);
 
     private boolean showText = false;
 
@@ -31,6 +35,7 @@ public class SnakeController {
         if (!showText) {
             this.showText = true;
             this.textBox.setText("If you see this, it means \nthat at least it's working so far :)");
+            LOG.info("Implement me button clicked");
         } else {
             this.showText = false;
             this.textBox.setText("\n\n");
