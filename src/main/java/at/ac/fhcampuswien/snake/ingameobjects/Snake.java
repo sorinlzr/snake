@@ -60,4 +60,29 @@ public class Snake {
         this.direction = newDirection;
     }
 
+    /**
+     * This method updates the position of the snake
+     * based on the current {@link Direction}
+     * To sum up, it will:
+     * - get current head {@link Position}
+     * - calculate new position of head based on current direction
+     * - replace current head with new head
+     * - remove last segment of the snake
+     */
+    public void updateSnakePosition() {
+
+        Position currentHead = segments.get(0);
+        Position newHead = null;
+
+        switch (this.direction) {
+            case UP -> newHead = new Position(currentHead.getX(), currentHead.getY() - 1);
+            case DOWN -> newHead = new Position(currentHead.getX(), currentHead.getY() + 1);
+            case LEFT -> newHead = new Position(currentHead.getX() - 1, currentHead.getY());
+            case RIGHT -> newHead = new Position(currentHead.getX() + 1, currentHead.getY());
+        }
+
+        segments.add(0, newHead);
+        segments.remove(segments.size() - 1);
+    }
+
 }
