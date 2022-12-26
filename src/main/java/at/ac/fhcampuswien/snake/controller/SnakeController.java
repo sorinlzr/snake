@@ -7,8 +7,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static at.ac.fhcampuswien.snake.util.Constants.SCREEN_SIZE_MEDIUM;
 
 public class SnakeController {
 
@@ -23,7 +26,7 @@ public class SnakeController {
     private ImageView logo;
 
     @FXML
-    private Canvas gameBoard;
+    private Pane gameBoard;
 
     public void initialize() {
         Image logo = new Image("snake_logo.jpg");
@@ -33,8 +36,11 @@ public class SnakeController {
 
         this.textBox.setText("\n\n");
 
-        this.gameBoard.setWidth(20);
-        this.gameBoard.setHeight(20);
+        this.gameBoard.setMaxWidth(SCREEN_SIZE_MEDIUM);
+        this.gameBoard.setMaxHeight(SCREEN_SIZE_MEDIUM);
+
+        this.gameBoard.setMinWidth(SCREEN_SIZE_MEDIUM);
+        this.gameBoard.setMinHeight(SCREEN_SIZE_MEDIUM);
     }
 
     @FXML
@@ -71,7 +77,7 @@ public class SnakeController {
         return this.logo;
     }
 
-    public Canvas getGameBoard(){
+    public Pane getGameBoard(){
         return this.gameBoard;
     }
 }

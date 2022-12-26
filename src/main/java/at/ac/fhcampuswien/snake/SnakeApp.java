@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -29,10 +30,13 @@ public class SnakeApp extends Application {
 
         logo.fitWidthProperty().bind(stage.widthProperty());
 
-        Canvas gameBoardCanvas = controller.getGameBoard();
-        GameBoard gameBoard = new GameBoard(gameBoardCanvas);
+        Pane gameBoardPane = controller.getGameBoard();
+        GameBoard gameBoard = new GameBoard(gameBoardPane);
+        gameBoard.Run();
 
-        gameBoard.playGame();
+        stage.setOnCloseRequest(event -> {
+            gameBoard.Stop();
+        });
 
         stage.setTitle(TITLE);
         stage.setScene(startScreen);

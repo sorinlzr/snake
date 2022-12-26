@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.snake.ingameobjects;
 
+import javafx.scene.input.KeyCode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class Snake {
         int initialLength = 0;
         Position initialPosition = new Position(9, 9);
 
+        // TODO use KeyCode Enums instead of custom ones. KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT
         switch (initialDirection) {
             case UP -> {
                 direction = Direction.UP;

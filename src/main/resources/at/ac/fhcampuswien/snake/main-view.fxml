@@ -15,9 +15,9 @@
             </Menu>
         </MenuBar>
         <ImageView fx:id="logo"/>
-        <HBox styleClass="canvas">
-            <Canvas fx:id="gameBoard"></Canvas>
-        </HBox>
+        <Pane fx:id="gameBoard">
+
+        </Pane>
     </VBox>
 
     <VBox>

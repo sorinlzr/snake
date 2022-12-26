@@ -10,19 +10,19 @@ enum Type {
     OBSTACLE
 }
 
-public abstract class DrawableObject {
+public abstract class BoardObject {
     public List<Position> positions;
 
     public Type type;
 
     public Color color;
 
-    public DrawableObject(Type type, Color color) {
+    public BoardObject(Type type, Color color) {
         this.type = type;
         this.color = color;
     }
 
-    public boolean doesIntersectsWith(DrawableObject other) {
+    public boolean doesIntersectsWith(BoardObject other) {
         for (Position position : positions) {
             if (other.positions.contains(position)) {
                 return true;

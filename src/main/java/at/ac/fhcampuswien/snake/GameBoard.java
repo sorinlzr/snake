@@ -1,76 +1,94 @@
 package at.ac.fhcampuswien.snake;
 
-import at.ac.fhcampuswien.snake.ingameobjects.DrawableObject;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
+import at.ac.fhcampuswien.snake.ingameobjects.BoardObject;
+import at.ac.fhcampuswien.snake.util.Constants;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameBoard {
 
-    private Canvas gameBoard;
+    private Pane gameBoard;
+
+    private TimerTask autoRun;
+
+    private Timer timer;
 
     // TODO implement Score somewhere. Here? Or should it be in Scoreboard? How should it be referenced?
 
-    private List<DrawableObject> objects;
+    private BoardObject Snake;
+    private List<BoardObject> boardObjects = new ArrayList<>();
 
-    private boolean doesNeedRedraw = true;
+    // TODO just for testing. Delete afterwards.
+    private List<Rectangle> rectangles = new ArrayList<>();
 
-    public GameBoard(Canvas gameBoard) {
+    /**
+     * Constructor for GameBoard.
+     * Requests focus for the game board, so that key events get recognized.
+     *
+     * @param gameBoard Pane to draw on
+     */
+    public GameBoard(Pane gameBoard) {
         this.gameBoard = gameBoard;
+        this.gameBoard.requestFocus();
 
+        autoRun = new TimerTask() {
+            @Override
+            public void run() {
+                update();
+            }
+        };
+    }
+
+    public void Run() {
+        addBoardObjects();
         initializeEvents();
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(autoRun, 0, 200);
+    }
+
+    public void Stop() {
+        timer.cancel();
+    }
+
+    private void addBoardObjects() {
+        Rectangle rectangle = new Rectangle(0, 0, 10, 10);
+
+        gameBoard.getChildren().add(rectangle);
+        this.rectangles.add(rectangle);
     }
 
     private void initializeEvents() {
-        // TODO Events does not fire.
-        this.gameBoard.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+        gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP -> {
-                    System.out.println("UP");
-                    doesNeedRedraw = true;
+                    throw new UnsupportedOperationException("Not implemented yet");
                 }
                 case DOWN -> {
-                    System.out.println("DOWN");
-                    doesNeedRedraw = true;
+                    throw new UnsupportedOperationException("Not implemented yet");
                 }
                 case LEFT -> {
-                    System.out.println("LEFT");
-                    doesNeedRedraw = true;
+                    throw new UnsupportedOperationException("Not implemented yet");
                 }
                 case RIGHT -> {
-                    System.out.println("RIGHT");
-                    doesNeedRedraw = true;
+                    throw new UnsupportedOperationException("Not implemented yet");
                 }
             }
         });
     }
 
-    public void playGame(){
-        boolean gameOver = false;
-        // TODO -> how to loop the game?
-//        while (!gameOver){
-            if (doesNeedRedraw){
-                drawGameBoard();
-                doesNeedRedraw = false;
+    private void update() {
+        for (Rectangle rectangle : this.rectangles) {
+            if (rectangle.getX() >= Constants.SCREEN_SIZE_MEDIUM) {
+                rectangle.setX(0);
+            }else {
+                rectangle.setX(rectangle.getX() + 10);
             }
-//        }
+        }
     }
-
-    private void drawGameBoard(){
-        // TODO draw positions of drawable objects here.
-        // TODO check for snake collision.
-        GraphicsContext gc = this.gameBoard.getGraphicsContext2D();
-
-        gc.setStroke(Color.RED);
-        gc.moveTo(0, 0);
-        gc.lineTo(100, 100);
-        gc.stroke();
-
-//        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-
 }
