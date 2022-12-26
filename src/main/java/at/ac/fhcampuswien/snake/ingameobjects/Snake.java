@@ -5,9 +5,12 @@ import java.util.List;
 
 import static at.ac.fhcampuswien.snake.util.Constants.Direction;
 
+
+//TODO implement DrawableObject
 public class Snake {
 
     private int length;
+
     private boolean isAlive;
     private Direction direction;
     private final List<Position> segments = new ArrayList<>();

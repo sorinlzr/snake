@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.canvas.Canvas?>
 <VBox fx:controller="at.ac.fhcampuswien.snake.controller.SnakeController"
       xmlns:fx="http://javafx.com/fxml">
     <VBox>
@@ -14,6 +15,9 @@
             </Menu>
         </MenuBar>
         <ImageView fx:id="logo"/>
+        <HBox styleClass="canvas">
+            <Canvas fx:id="gameBoard"></Canvas>
+        </HBox>
     </VBox>
 
     <VBox>

@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.snake.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -21,6 +22,9 @@ public class SnakeController {
     @FXML
     private ImageView logo;
 
+    @FXML
+    private Canvas gameBoard;
+
     public void initialize() {
         Image logo = new Image("snake_logo.jpg");
         this.logo.setImage(logo);
@@ -28,6 +32,9 @@ public class SnakeController {
         this.logo.setSmooth(true);
 
         this.textBox.setText("\n\n");
+
+        this.gameBoard.setWidth(20);
+        this.gameBoard.setHeight(20);
     }
 
     @FXML
@@ -62,5 +69,9 @@ public class SnakeController {
 
     public ImageView getLogo() {
         return this.logo;
+    }
+
+    public Canvas getGameBoard(){
+        return this.gameBoard;
     }
 }
