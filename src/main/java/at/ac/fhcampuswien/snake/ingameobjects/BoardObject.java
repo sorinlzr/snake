@@ -1,34 +1,28 @@
 package at.ac.fhcampuswien.snake.ingameobjects;
 
-import javafx.scene.paint.Color;
+import at.ac.fhcampuswien.snake.util.Constants;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
-import java.util.List;
+public abstract class BoardObject extends Rectangle{
 
-enum Type {
-    POINTS,
-    CHARACTER,
-    OBSTACLE
-}
+    /**
+     * The width and height of an object.
+     * All objects are squares.
+     */
+    static final int DRAW_SIZE = Constants.OBJECT_SIZE_MEDIUM;
 
-public abstract class BoardObject {
-    public List<Position> positions;
+    /**
+     * The type of object. Indicates if it is friendly, deadly or something else.
+     */
+    public Constants.Type type;
 
-    public Type type;
-
-    public Color color;
-
-    public BoardObject(Type type, Color color) {
+    public BoardObject(Constants.Type type, int x, int y) {
         this.type = type;
-        this.color = color;
-    }
 
-    public boolean doesIntersectsWith(BoardObject other) {
-        for (Position position : positions) {
-            if (other.positions.contains(position)) {
-                return true;
-            }
-        }
-
-        return false;
+        this.setX(x);
+        this.setY(y);
+        this.setWidth(DRAW_SIZE);
+        this.setHeight(DRAW_SIZE);
     }
 }

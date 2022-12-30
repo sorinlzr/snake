@@ -4,11 +4,8 @@ import at.ac.fhcampuswien.snake.controller.SnakeController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,10 +29,10 @@ public class SnakeApp extends Application {
 
         Pane gameBoardPane = controller.getGameBoard();
         GameBoard gameBoard = new GameBoard(gameBoardPane);
-        gameBoard.Run();
+        gameBoard.startGame();
 
         stage.setOnCloseRequest(event -> {
-            gameBoard.Stop();
+            gameBoard.stopGame();
         });
 
         stage.setTitle(TITLE);
