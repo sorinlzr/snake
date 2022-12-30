@@ -62,6 +62,27 @@ public class Snake {
         return segments;
     }
 
+    /**
+     * This method checks if the snakes goes out of the game area or if the head collides with the body segment.
+     */
+    public void checkForCollision() {
+        Position head = this.segments.get(0);
+
+        //Checks if snake goes out of the game border.
+        if (head.getX() < 0 || head.getX() > SCREEN_SIZE_MEDIUM ||
+                head.getY() < 0 || head.getY() > SCREEN_SIZE_MEDIUM) {
+            this.isAlive = false;
+        }
+
+        //Checks if snake collides with itself.
+        for (int i = 1; i < this.length; i++) {
+            if (head.getX() == segments.get(i).getX() && head.getY() == segments.get(i).getY()) {
+                this.isAlive = false;
+                break;
+            }
+        }
+    }
+
     public void setDirection(Direction newDirection) {
         this.direction = newDirection;
     }
