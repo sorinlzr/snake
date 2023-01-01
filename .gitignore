@@ -10,6 +10,9 @@ target/
 .idea/compiler.xml
 .idea/libraries/
 .idea/gradle.xml
+.idea/misc.xml
+.idea/php.xml
+.idea/uiDesigner.xml
 *.iws
 *.iml
 *.ipr
