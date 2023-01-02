@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
-<VBox fx:controller="at.ac.fhcampuswien.snake.controller.SnakeController"
+<VBox fx:controller="at.ac.fhcampuswien.snake.controller.MainViewController"
       xmlns:fx="http://javafx.com/fxml">
     <VBox>
         <MenuBar>
@@ -15,11 +15,10 @@
             </Menu>
         </MenuBar>
         <ImageView fx:id="logo"/>
-        <Pane fx:id="gameBoard">
-
-        </Pane>
     </VBox>
+    <!--<Pane fx:id="gameBoard">
 
+    </Pane>-->
     <VBox>
         <padding>
             <Insets left="10"/>
@@ -31,7 +30,7 @@
         <padding>
             <Insets bottom="2"/>
         </padding>
-        <Button text="Click me!" onAction="#onImplementMeButtonClick"
+        <Button text="Start Game!" onAction="#startGame"
                 GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
         <Button text="Exit" onAction="#onExitButtonClick"
                 GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
