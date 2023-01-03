@@ -56,7 +56,7 @@ public class MainViewController {
         stage.setScene(gameScreen);
         Pane gameBoardPane = gameboardViewController.getGameBoard();
         GameBoard gameBoard = new GameBoard(gameBoardPane);
-        gameBoard.startGame();
+        gameBoard.startGame(stage);
 
         stage.setOnCloseRequest(event -> {
             gameBoard.stopGame();
