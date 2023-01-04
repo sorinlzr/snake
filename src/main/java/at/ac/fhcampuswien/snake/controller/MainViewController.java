@@ -6,14 +6,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -54,7 +54,7 @@ public class MainViewController {
         Scene gameScreen = new Scene(gameBoardViewFxmlLoader.load(), SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM);
         GameboardViewController gameboardViewController = gameBoardViewFxmlLoader.getController();
         stage.setScene(gameScreen);
-        Pane gameBoardPane = gameboardViewController.getGameBoard();
+        Canvas gameBoardPane = gameboardViewController.getGameBoard();
         GameBoard gameBoard = new GameBoard(gameBoardPane);
         gameBoard.startGame(stage);
 

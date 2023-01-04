@@ -8,8 +8,10 @@ public class Constants {
     public static final int OBJECT_SIZE_MEDIUM = SCREEN_SIZE_MEDIUM/NUMBER_OF_ROWS_AND_COLS;
 
     public static final String GAMEBOARD_COLOR_LIGHT = "FFCC66";
-
     public static final String GAMEBOARD_COLOR_DARK = "CC9933";
+
+    public final static int INITIAL_SIZE = 4;
+    public final static Direction INITIAL_DIRECTION = Direction.RIGHT;
 
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
