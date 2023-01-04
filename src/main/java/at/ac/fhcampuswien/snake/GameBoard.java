@@ -2,19 +2,28 @@ package at.ac.fhcampuswien.snake;
 
 import at.ac.fhcampuswien.snake.ingameobjects.BoardObject;
 import at.ac.fhcampuswien.snake.util.Constants;
-import javafx.scene.image.Image;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static at.ac.fhcampuswien.snake.util.Constants.OBJECT_SIZE_MEDIUM;
+import static at.ac.fhcampuswien.snake.util.Constants.SCREEN_SIZE_MEDIUM;
+import static at.ac.fhcampuswien.snake.util.Constants.GAMEBOARD_COLOR_DARK;
+import static at.ac.fhcampuswien.snake.util.Constants.GAMEBOARD_COLOR_LIGHT;
+
 public class GameBoard {
 
+    private GraphicsContext gc;
     /**
      * The pane that is used to display the game board.
      */
@@ -81,8 +90,8 @@ public class GameBoard {
      * It is important to call the {@link #stopGame()} method when the game is over,
      * so that the timer does not continue to run in the background.
      */
-    public void startGame() {
-        initializeBoardObjects();
+    public void startGame(Stage stage) {
+        initializeBoardObjects(stage);
         initializeEvents();
 
         refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 200);
@@ -99,25 +108,36 @@ public class GameBoard {
      * Add objects which should be part of the game here.
      *
      */
-    private void initializeBoardObjects() {
-        // The rectangle is still for testing purposes. We will use BoardObjects instead.
+    private void initializeBoardObjects(Stage stage) {
+        Canvas canvas = new Canvas(SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM);
+        Group root = new Group();
+        gc = canvas.getGraphicsContext2D();
+        root.getChildren().add(canvas);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
 
-        // Creates a rectangle. The coordinates will be in relative pixel distance to the Pane.
-        Rectangle rectangle = new Rectangle(0, 0, Constants.SCREEN_SIZE_MEDIUM, Constants.SCREEN_SIZE_MEDIUM);
-
-        // Fill the rectangle with an image.
-        Image img = new Image("/graphics/gameboard/sandy-checkerboard-200x200.png");
-        rectangle.setFill(new ImagePattern(img));
-
-        // This draws objects on the pane. If you do this, you can see them on the gameBoard.
-        gameBoard.getChildren().add(rectangle);
-
-        // Adds a rectangle to the list which manages all rectangles in the background.
-        this.rectangles.add(rectangle);
-
+        drawGameboard(gc);
         for (int i = 0; i < boardObjects.length; i++) {
             for (int j = 0; j < boardObjects[i].length; j++) {
                 // TODO initialize the walls here.
+            }
+        }
+    }
+
+    /**
+     * Method to draw the checkerboard pattern on the GraphicsContext
+     * @param gc GraphicsContext gc used for all BoardObjects
+     */
+    private void drawGameboard(GraphicsContext gc) {
+        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i++) {
+            for (int j = 0; j < SCREEN_SIZE_MEDIUM; j++) {
+                if ((i + j) % 2 == 0) {
+                    gc.setFill(Color.web(GAMEBOARD_COLOR_LIGHT));
+                } else {
+                    gc.setFill(Color.web(GAMEBOARD_COLOR_DARK));
+                }
+                gc.fillRect(i * OBJECT_SIZE_MEDIUM, j * OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
             }
         }
     }
