@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.snake;
 
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
 import at.ac.fhcampuswien.snake.ingameobjects.Snake;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -73,7 +74,7 @@ public class GameBoard {
         initializeEvents();
         gameBoard.requestFocus();
 
-        refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 500);
+        refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 200);
     }
 
     /**
@@ -135,7 +136,7 @@ public class GameBoard {
         // Basically the event gets passed as a parameter and can be used inside the parentheses.
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case A -> {
+                case UP -> {
                     snake.setDirection(Direction.UP);
                 }
                 case DOWN -> {
@@ -156,10 +157,20 @@ public class GameBoard {
      * For example the movement of the snake or collision detection.
      * <p>
      * The method is automatically called by a timer after n milliseconds.
+     * <p>
+     * Platform.runLater - Since we update a GUI component from a non-GUI thread, we need to put our update in a queue,
+     * and it will be handled by the GUI thread as soon as possible.
      */
     private void refreshGameBoard() {
-        snake.updateSnakePosition();
-        drawGameboard(gc);
-        drawSnake(gc);
+        Platform.runLater(() -> {
+            try {
+                snake.updateSnakePosition();
+                gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
+                drawGameboard(gc);
+                drawSnake(gc);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 }
