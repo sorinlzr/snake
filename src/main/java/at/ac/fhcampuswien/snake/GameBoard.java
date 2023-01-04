@@ -307,13 +307,15 @@ public class GameBoard {
         Platform.runLater(() -> {
             try {
                 snake.updateSnakePosition();
-                // If the snake ate the food with the last "movement" a knew food element gets created.
-                if(null == food) food = new Food(snake);
+                snake.checkForCollision();
+                if (snake.isAlive()){
+                    // If the snake ate the food with the last "movement" a knew food element gets created.
+                    if(null == food) food = new Food(snake);
 
-                gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
-                drawGameboard(gc);
-                drawWalls(gc);
-                drawSnake(gc);
+                    gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
+                    drawGameboard(gc);
+                    drawWalls(gc);
+                    drawSnake(gc);
 
                 /*
                   If the Snake Head moved onto the Food Element, the snake gets longer [via Snake.eats()]
@@ -324,10 +326,12 @@ public class GameBoard {
                        would move onto next.
                            Which would mean, that the food is never shown, but the snake would appear to get longer for no reason.
                  */
-                if(checkIfSnakeHeadIsOnFood()) {
-                    snake.eats();
-                    food = null;
-                }else drawFood(gc); //drawFood(gc);
+                    if(checkIfSnakeHeadIsOnFood()) {
+                        snake.eats();
+                        food = null;
+                    }else drawFood(gc); //drawFood(gc);
+
+                }
 
             } catch (Exception ex) {
                 ex.printStackTrace();

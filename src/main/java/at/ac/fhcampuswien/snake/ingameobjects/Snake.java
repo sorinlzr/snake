@@ -69,8 +69,8 @@ public class Snake {
         Position head = this.segments.get(0);
 
         //Checks if snake goes out of the game border.
-        if (head.getX() < 0 || head.getX() > SCREEN_SIZE_MEDIUM ||
-                head.getY() < 0 || head.getY() > SCREEN_SIZE_MEDIUM) {
+        if (head.getX() < 0 || head.getX() >= SCREEN_SIZE_MEDIUM ||
+                head.getY() < 0 || head.getY() >= SCREEN_SIZE_MEDIUM) {
             this.isAlive = false;
         }
 
@@ -117,4 +117,7 @@ public class Snake {
         segments.remove(segments.size() - 1);
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
 }
