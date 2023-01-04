@@ -3,14 +3,18 @@ package at.ac.fhcampuswien.snake;
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
 import at.ac.fhcampuswien.snake.ingameobjects.Snake;
 import javafx.application.Platform;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
 import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 public class GameBoard {
@@ -115,8 +119,24 @@ public class GameBoard {
 
     private void drawSnake(GraphicsContext gc) {
         gc.setFill(Color.BLUE);
-        Position head = snake.getSegments().get(0);
-        gc.fillOval(head.getX(), head.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+        Position headPosition = snake.getSegments().get(0);
+        Image headImg = new Image("graphics/snake/head.png");
+
+        int rotation = 0;
+
+        switch (snake.getDirection()) {
+            case RIGHT -> rotation = 90;
+            case DOWN -> rotation = 180;
+            case LEFT -> rotation = 270;
+        }
+
+        ImageView iv = new ImageView(headImg);
+        iv.setRotate(rotation);
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        Image rotatedImage = iv.snapshot(params, null);
+
+        gc.drawImage(rotatedImage, headPosition.getX(), headPosition.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
 
         gc.setFill(Color.GREEN);
         for (int i = 1; i < snake.getSegments().size(); i++) {
@@ -127,7 +147,6 @@ public class GameBoard {
 
     /**
      * Initializes javafx events.
-     *
      * javafx events are events which are triggered by the user.
      * For example a button click or a key press.
      */
@@ -136,18 +155,10 @@ public class GameBoard {
         // Basically the event gets passed as a parameter and can be used inside the parentheses.
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP -> {
-                    snake.setDirection(Direction.UP);
-                }
-                case DOWN -> {
-                    snake.setDirection(Direction.DOWN);
-                }
-                case LEFT -> {
-                    snake.setDirection(Direction.LEFT);
-                }
-                case RIGHT -> {
-                    snake.setDirection(Direction.RIGHT);
-                }
+                case UP -> snake.setDirection(UP);
+                case DOWN -> snake.setDirection(DOWN);
+                case LEFT -> snake.setDirection(LEFT);
+                case RIGHT -> snake.setDirection(RIGHT);
             }
         });
     }
