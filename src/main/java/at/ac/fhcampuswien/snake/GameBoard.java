@@ -1,25 +1,16 @@
 package at.ac.fhcampuswien.snake;
 
-import at.ac.fhcampuswien.snake.ingameobjects.BoardObject;
-import at.ac.fhcampuswien.snake.util.Constants;
-import javafx.scene.Group;
-import javafx.scene.Scene;
+import at.ac.fhcampuswien.snake.ingameobjects.Position;
+import at.ac.fhcampuswien.snake.ingameobjects.Snake;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static at.ac.fhcampuswien.snake.util.Constants.OBJECT_SIZE_MEDIUM;
-import static at.ac.fhcampuswien.snake.util.Constants.SCREEN_SIZE_MEDIUM;
-import static at.ac.fhcampuswien.snake.util.Constants.GAMEBOARD_COLOR_DARK;
-import static at.ac.fhcampuswien.snake.util.Constants.GAMEBOARD_COLOR_LIGHT;
+import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 public class GameBoard {
 
@@ -27,7 +18,7 @@ public class GameBoard {
     /**
      * The pane that is used to display the game board.
      */
-    private final Pane gameBoard;
+    private final Canvas gameBoard;
 
     /**
      * A task which is executed by {@link #refreshGameBoardTimer}.
@@ -39,25 +30,15 @@ public class GameBoard {
      */
     private final Timer refreshGameBoardTimer;
 
-    // TODO: I don't know if the snake should be an extra object or not.
-    //  Maybe it should just be the head which is tracked here.
-    //  We definitely need to track the head for collision detection let the other parts of the snake
-    //  move the same way as the head.
-    private BoardObject Snake;
-
     /**
-     * An array of all {@link BoardObject}s that are currently on the game board.
-     * The array manages the background logic of the game objects.
+     * The snake, lol
      */
-    private BoardObject[][] boardObjects;
+    private Snake snake;
 
     /**
      * The score of the current game.
      */
     private int score;
-
-    // TODO just for testing. Delete afterwards.
-    private List<Rectangle> rectangles = new ArrayList<>();
 
     /**
      * Constructor for GameBoard.
@@ -65,7 +46,7 @@ public class GameBoard {
      *
      * @param gameBoard Pane to draw on
      */
-    public GameBoard(Pane gameBoard) {
+    public GameBoard(Canvas gameBoard) {
         this.gameBoard = gameBoard;
         this.gameBoard.requestFocus();
 
@@ -79,9 +60,6 @@ public class GameBoard {
         };
 
         refreshGameBoardTimer = new Timer();
-
-        int segmentsPerSide = Constants.SCREEN_SIZE_MEDIUM / Constants.OBJECT_SIZE_MEDIUM;
-        boardObjects = new BoardObject[segmentsPerSide][segmentsPerSide];
     }
 
     /**
@@ -93,8 +71,9 @@ public class GameBoard {
     public void startGame(Stage stage) {
         initializeBoardObjects(stage);
         initializeEvents();
+        gameBoard.requestFocus();
 
-        refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 200);
+        refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 500);
     }
 
     /**
@@ -109,20 +88,11 @@ public class GameBoard {
      *
      */
     private void initializeBoardObjects(Stage stage) {
-        Canvas canvas = new Canvas(SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM);
-        Group root = new Group();
-        gc = canvas.getGraphicsContext2D();
-        root.getChildren().add(canvas);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
+        gc = gameBoard.getGraphicsContext2D();
 
         drawGameboard(gc);
-        for (int i = 0; i < boardObjects.length; i++) {
-            for (int j = 0; j < boardObjects[i].length; j++) {
-                // TODO initialize the walls here.
-            }
-        }
+        drawSnake(gc);
     }
 
     /**
@@ -142,6 +112,18 @@ public class GameBoard {
         }
     }
 
+    private void drawSnake(GraphicsContext gc) {
+        gc.setFill(Color.BLUE);
+        Position head = snake.getSegments().get(0);
+        gc.fillOval(head.getX(), head.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+
+        gc.setFill(Color.GREEN);
+        for (int i = 1; i < snake.getSegments().size(); i++) {
+            Position bodySegment = snake.getSegments().get(i);
+            gc.fillOval(bodySegment.getX(), bodySegment.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+        }
+    }
+
     /**
      * Initializes javafx events.
      *
@@ -153,17 +135,17 @@ public class GameBoard {
         // Basically the event gets passed as a parameter and can be used inside the parentheses.
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP -> {
-                    throw new UnsupportedOperationException("Not implemented yet");
+                case A -> {
+                    snake.setDirection(Direction.UP);
                 }
                 case DOWN -> {
-                    throw new UnsupportedOperationException("Not implemented yet");
+                    snake.setDirection(Direction.DOWN);
                 }
                 case LEFT -> {
-                    throw new UnsupportedOperationException("Not implemented yet");
+                    snake.setDirection(Direction.LEFT);
                 }
                 case RIGHT -> {
-                    throw new UnsupportedOperationException("Not implemented yet");
+                    snake.setDirection(Direction.RIGHT);
                 }
             }
         });
@@ -176,6 +158,8 @@ public class GameBoard {
      * The method is automatically called by a timer after n milliseconds.
      */
     private void refreshGameBoard() {
-
+        snake.updateSnakePosition();
+        drawGameboard(gc);
+        drawSnake(gc);
     }
 }
