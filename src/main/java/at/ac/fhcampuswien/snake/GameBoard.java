@@ -103,10 +103,10 @@ public class GameBoard {
         // The rectangle is still for testing purposes. We will use BoardObjects instead.
 
         // Creates a rectangle. The coordinates will be in relative pixel distance to the Pane.
-        Rectangle rectangle = new Rectangle(0, 0, 10, 10);
+        Rectangle rectangle = new Rectangle(0, 0, Constants.SCREEN_SIZE_MEDIUM, Constants.SCREEN_SIZE_MEDIUM);
 
         // Fill the rectangle with an image.
-        Image img = new Image("/fruits/apple.png");
+        Image img = new Image("/graphics/gameboard/sandy-checkerboard-200x200.png");
         rectangle.setFill(new ImagePattern(img));
 
         // This draws objects on the pane. If you do this, you can see them on the gameBoard.
@@ -156,13 +156,6 @@ public class GameBoard {
      * The method is automatically called by a timer after n milliseconds.
      */
     private void refreshGameBoard() {
-        // The rectangle is still for testing purposes. We will use BoardObjects instead.
-        for (Rectangle rectangle : this.rectangles) {
-            if (rectangle.getX() >= Constants.SCREEN_SIZE_MEDIUM) {
-                rectangle.setX(0);
-            }else {
-                rectangle.setX(rectangle.getX() + 10);
-            }
-        }
+
     }
 }
