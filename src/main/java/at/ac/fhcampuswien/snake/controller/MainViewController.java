@@ -33,7 +33,7 @@ public class MainViewController {
     private ImageView logo;
 
     public void initialize() {
-        Image logo = new Image("snake_logo.jpg");
+        Image logo = new Image("graphics/snake_logo.jpg");
         this.logo.setImage(logo);
         this.logo.setPreserveRatio(true);
         this.logo.setSmooth(true);
