@@ -1,30 +1,31 @@
 package at.ac.fhcampuswien.snake.ingameobjects;
 
-import at.ac.fhcampuswien.snake.util.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static at.ac.fhcampuswien.snake.util.Constants.OBJECT_SIZE_MEDIUM;
 
 public class Wall {
 
     private final List<Position> segments = new ArrayList<>();
 
     /**
-     * This Contructor creates the border walls.
-     * It requires a orientation and the starting points after which
-     * it will create wall till the edge of the screen in BLOCK_SIZE increments.
-     * @param isHorizontal specifies if the horizontal or not Depending on this, one of the coordinates is constant.
-     * @param startingPostionX The starting point of the wall on the X axis.
-     * @param startingPostionY The starting point of the wall on the Y axis.
+     * This Constructor creates a wall with a specified length
+     * It requires the orientation, the length and the starting points
+     *
+     * @param isHorizontal      specifies if the horizontal or not. Depending on this, one of the coordinates is constant.
+     * @param startingPositionX The starting point of the wall on the X axis.
+     * @param startingPositionY The starting point of the wall on the Y axis.
+     * @param length            The length of the wall
      */
-    public Wall (boolean isHorizontal, int startingPostionX, int startingPostionY) {
+    public Wall(boolean isHorizontal, int startingPositionX, int startingPositionY, int length) {
         if (isHorizontal) {
-            for (int i = startingPostionX; i < Constants.SCREEN_SIZE_MEDIUM; i += Constants.BLOCK_SIZE) {
-                segments.add(new Position(startingPostionX + i * Constants.BLOCK_SIZE, startingPostionY) );
+            for (int i = 0; i < length; i++) {
+                segments.add(new Position(startingPositionX + i * OBJECT_SIZE_MEDIUM, startingPositionY));
             }
         } else {
-            for (int i = startingPostionY; i < Constants.SCREEN_SIZE_MEDIUM; i += Constants.BLOCK_SIZE) {
-                segments.add(new Position(startingPostionX, startingPostionY + i * Constants.BLOCK_SIZE) );
+            for (int i = 0; i < length; i++) {
+                segments.add(new Position(startingPositionX, startingPositionY + i * OBJECT_SIZE_MEDIUM));
             }
         }
     }
