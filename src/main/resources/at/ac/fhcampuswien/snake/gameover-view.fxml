@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.snake.controller.GameOverController">
+    <VBox>
+        <MenuBar>
+            <Menu text="Menu">
+            </Menu>
+        </MenuBar>
+    </VBox>
+    <Text fill="#911e9e" text="Game Over" textAlignment="CENTER" x="200.0" y="200.0">
+        <font>
+            <Font size="31.0" />
+        </font>
+        <VBox.margin>
+            <Insets left="230.0" top="100.0" />
+        </VBox.margin>
+    </Text>
+    <HBox prefHeight="59.0" prefWidth="600.0">
+        <children>
+            <Text fill="#911e9e" text="Score :" textAlignment="CENTER" x="200.0" y="200.0">
+                <font>
+                    <Font size="22.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="230.0" top="20.0" />
+                </HBox.margin>
+            </Text>
+            <Text fx:id="scoreTextField" fill="#911e9e" text="InsertScore" textAlignment="CENTER" x="200.0" y="200.0">
+                <font>
+                    <Font size="22.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="40.0" top="20.0" />
+                </HBox.margin>
+            </Text>
+        </children>
+    </HBox>
+    <Button mnemonicParsing="false" onAction="#playNewGame" text="New Game">
+        <VBox.margin>
+            <Insets left="266.0" top="20.0" />
+        </VBox.margin></Button>
+    <Button mnemonicParsing="false" onAction="#goToSettings" text="Settings">
+        <VBox.margin>
+            <Insets left="273.0" top="10.0" />
+        </VBox.margin></Button>
+
+</VBox>
