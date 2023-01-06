@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
-import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
 import static at.ac.fhcampuswien.snake.util.Constants.*;
+import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
 
 public class GameBoard {
 
@@ -286,10 +286,18 @@ public class GameBoard {
         // Basically the event gets passed as a parameter and can be used inside the parentheses.
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP -> snake.setDirection(UP);
-                case DOWN -> snake.setDirection(DOWN);
-                case LEFT -> snake.setDirection(LEFT);
-                case RIGHT -> snake.setDirection(RIGHT);
+                case UP -> {
+                    if (snake.getDirection() != DOWN) snake.setDirection(UP);
+                }
+                case DOWN -> {
+                    if (snake.getDirection() != UP) snake.setDirection(DOWN);
+                }
+                case LEFT -> {
+                    if (snake.getDirection() != RIGHT) snake.setDirection(LEFT);
+                }
+                case RIGHT -> {
+                    if (snake.getDirection() != LEFT) snake.setDirection(RIGHT);
+                }
             }
         });
     }
@@ -307,7 +315,7 @@ public class GameBoard {
         Platform.runLater(() -> {
             try {
                 snake.updateSnakePosition();
-                snake.checkForCollision();
+                snake.checkForCollisions(innerWall);
                 if (snake.isAlive()){
                     // If the snake ate the food with the last "movement" a knew food element gets created.
                     if(null == food) food = new Food(snake);

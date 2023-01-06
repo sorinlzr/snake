@@ -65,20 +65,30 @@ public class Snake {
     /**
      * This method checks if the snakes goes out of the game area or if the head collides with the body segment.
      */
-    public void checkForCollision() {
+    public void checkForCollisions(Wall wall) {
         Position head = this.segments.get(0);
 
-        //Checks if snake goes out of the game border.
-        if (head.getX() < 0 || head.getX() >= SCREEN_SIZE_MEDIUM ||
-                head.getY() < 0 || head.getY() >= SCREEN_SIZE_MEDIUM) {
+        // Checks if snake goes out of the game border.
+        if (head.getX() < OBJECT_SIZE_MEDIUM || head.getX() >= SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM ||
+                head.getY() < OBJECT_SIZE_MEDIUM || head.getY() >= SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 2) {
             this.isAlive = false;
         }
 
-        //Checks if snake collides with itself.
+        // Checks if snake collides with itself.
         for (int i = 1; i < this.length; i++) {
             if (head.getX() == segments.get(i).getX() && head.getY() == segments.get(i).getY()) {
                 this.isAlive = false;
                 break;
+            }
+        }
+
+        // If there is an inner wall, checks if snake collides with the inner walls
+        if (wall != null) {
+            for (Position wallSegment : wall.getSegments()) {
+                if (head.getX() == wallSegment.getX() && head.getY() == wallSegment.getY()) {
+                    this.isAlive = false;
+                    break;
+                }
             }
         }
     }
@@ -87,9 +97,9 @@ public class Snake {
         this.direction = newDirection;
     }
 
-    public void eats(){
+    public void eats() {
         length++;
-        segments.add(new Position(-1,-1));
+        segments.add(new Position(-1, -1));
     }
 
     /**
