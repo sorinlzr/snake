@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.snake;
 
+import at.ac.fhcampuswien.snake.ingameobjects.Food;
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
 import at.ac.fhcampuswien.snake.ingameobjects.Snake;
 import at.ac.fhcampuswien.snake.ingameobjects.Wall;
@@ -39,6 +40,7 @@ public class GameBoard {
      * The snake, lol
      */
     private Snake snake;
+    private Food food;
 
     /**
      * An inner wall that may appear random inside the game area at the start of the game, to make our lives harder
@@ -110,7 +112,9 @@ public class GameBoard {
      */
     private void initializeBoardObjects(Stage stage) {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
+
         innerWall = generateRandomWall();
+        food = new Food(snake);
         gc = gameBoard.getGraphicsContext2D();
 
         drawGameboard(gc);
@@ -189,6 +193,11 @@ public class GameBoard {
         }
     }
 
+    private void drawFood(GraphicsContext gc) {
+        Image foodImg = new Image ("graphics/fruit/" + food.getFoodType());
+        gc.drawImage(foodImg, food.getLocation().getX(), food.getLocation().getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+    }
+
     private void drawSnake(GraphicsContext gc) {
         gc.setFill(Color.BLUE);
         Position headPosition = snake.getSegments().get(0);
@@ -214,6 +223,11 @@ public class GameBoard {
             Position bodySegment = snake.getSegments().get(i);
             gc.fillOval(bodySegment.getX(), bodySegment.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
+    }
+
+    private boolean checkIfSnakeHeadIsOnFood(){
+        return  (snake.getSegments().get(0).getX() == food.getLocation().getX() &&
+                 snake.getSegments().get(0).getY() == food.getLocation().getY());
     }
 
     /**
@@ -293,10 +307,28 @@ public class GameBoard {
         Platform.runLater(() -> {
             try {
                 snake.updateSnakePosition();
+                // If the snake ate the food with the last "movement" a knew food element gets created.
+                if(null == food) food = new Food(snake);
+
                 gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
                 drawGameboard(gc);
                 drawWalls(gc);
                 drawSnake(gc);
+
+                /*
+                  If the Snake Head moved onto the Food Element, the snake gets longer [via Snake.eats()]
+                  If that happens, we don't want the food to be printed.
+                  food gets assigned "null", because the next food element should not be created before the Snake has moved
+                  one more time.
+                       This could otherwise lead to the scenario, where the food randomly gets spawned to location, which the snake
+                       would move onto next.
+                           Which would mean, that the food is never shown, but the snake would appear to get longer for no reason.
+                 */
+                if(checkIfSnakeHeadIsOnFood()) {
+                    snake.eats();
+                    food = null;
+                }else drawFood(gc); //drawFood(gc);
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
