@@ -66,6 +66,11 @@ public class Snake {
         this.direction = newDirection;
     }
 
+    public void eats(){
+        length++;
+        segments.add(new Position(-1,-1));
+    }
+
     /**
      * This method updates the position of the snake
      * based on the current {@link Direction}
