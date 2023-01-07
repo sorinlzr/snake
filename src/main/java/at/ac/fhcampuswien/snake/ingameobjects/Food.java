@@ -17,7 +17,7 @@ public class Food{
         boolean isTargetFieldFree = true;
         int foodXCoord;
         int foodYCoord;
-        int segmentNumber = Constants.SCREEN_SIZE_MEDIUM / Constants.OBJECT_SIZE_MEDIUM;
+        int segmentNumber = Constants.GAME_BOARD_SIZE_MEDIUM / Constants.OBJECT_SIZE_MEDIUM;
         do {
             foodXCoord = (int) (Math.random() * segmentNumber);
             foodYCoord = (int) (Math.random() * segmentNumber);

@@ -12,8 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static at.ac.fhcampuswien.snake.util.Constants.SCREEN_SIZE_MEDIUM;
-import static at.ac.fhcampuswien.snake.util.Constants.TITLE;
+import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 /**
  * This class is responsible for switching between the different views and managing the gameBoard state.
@@ -34,7 +33,7 @@ public class StateManager {
         stopGameIfRunning();
 
         FXMLLoader fxmlLoader = new FXMLLoader(SnakeApp.class.getResource("main-view.fxml"));
-        Scene startScreen = new Scene(fxmlLoader.load(), SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM);
+        Scene startScreen = new Scene(fxmlLoader.load(), APP_WIDTH_MEDIUM, APP_HEIGHT_MEDIUM);
         MainViewController mainViewController = fxmlLoader.getController();
         mainViewController.setStage(stage);
 
@@ -48,7 +47,7 @@ public class StateManager {
 
     public static void switchToGameBoardView() throws IOException {
         FXMLLoader gameBoardViewFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("gameboard-view.fxml"));
-        Scene gameScreen = new Scene(gameBoardViewFxmlLoader.load(), SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM);
+        Scene gameScreen = new Scene(gameBoardViewFxmlLoader.load(), APP_WIDTH_MEDIUM, APP_HEIGHT_MEDIUM);
         GameboardViewController gameboardViewController = gameBoardViewFxmlLoader.getController();
         gameboardViewController.setStage(stage);
         stage.setScene(gameScreen);

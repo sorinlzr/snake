@@ -11,7 +11,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -154,7 +153,7 @@ public class GameBoard {
      * @return a random int for the starting position of the wall
      */
     private int getRandomWallPosition(Random rand, int wallLength, boolean isHorizontal) {
-        int range = SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * (wallLength + 2);
+        int range = GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * (wallLength + 2);
 
         Set<Integer> exclusions = new HashSet<>();
         int segmentPosition;
@@ -188,8 +187,8 @@ public class GameBoard {
      * @param gc GraphicsContext gc used for all BoardObjects
      */
     private void drawGameboard(GraphicsContext gc) {
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i++) {
-            for (int j = 0; j < SCREEN_SIZE_MEDIUM; j++) {
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i++) {
+            for (int j = 0; j < GAME_BOARD_SIZE_MEDIUM; j++) {
                 if ((i + j) % 2 == 0) {
                     gc.setFill(Color.web(GAMEBOARD_COLOR_LIGHT));
                 } else {
@@ -255,24 +254,24 @@ public class GameBoard {
      */
     private void drawPerimeterWalls(GraphicsContext gc) {
         //Upper wall
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
             gc.drawImage(wallPattern, i, 0, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
 
         //Bottom wall - we subtract 2*OBJECT_SIZE_MEDIUM from the Y position to make it visible inside the Gameboard area
         // and to account for the Menu bar
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
-            gc.drawImage(wallPattern, i, SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 2, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+            gc.drawImage(wallPattern, i, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
 
         //Left wall
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
             gc.drawImage(wallPattern, 0, i, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
 
         //Right wall - we subtract OBJECT_SIZE_MEDIUM from the X position to make it visible inside the Gameboard area
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
-            gc.drawImage(wallPattern, SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM, i, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+            gc.drawImage(wallPattern, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM, i, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
     }
 

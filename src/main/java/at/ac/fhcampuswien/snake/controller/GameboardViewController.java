@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static at.ac.fhcampuswien.snake.util.Constants.SCREEN_SIZE_MEDIUM;
+import static at.ac.fhcampuswien.snake.util.Constants.GAME_BOARD_SIZE_MEDIUM;
 
 public class GameboardViewController {
 
@@ -24,8 +24,8 @@ public class GameboardViewController {
     private VBox footer;
 
     public void initialize() {
-        this.gameBoard.setHeight(SCREEN_SIZE_MEDIUM - 50);
-        this.gameBoard.setWidth(SCREEN_SIZE_MEDIUM);
+        this.gameBoard.setHeight(GAME_BOARD_SIZE_MEDIUM);
+        this.gameBoard.setWidth(GAME_BOARD_SIZE_MEDIUM);
 
         body.setVgrow(footer, javafx.scene.layout.Priority.ALWAYS);
         footer.setAlignment(javafx.geometry.Pos.CENTER);
