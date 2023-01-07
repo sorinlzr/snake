@@ -5,13 +5,20 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<?import javafx.scene.control.MenuItem?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="at.ac.fhcampuswien.snake.controller.GameboardViewController"
-      prefHeight="400.0" prefWidth="600.0">
-    <VBox>
-        <MenuBar>
+      prefHeight="450.0" prefWidth="600.0"
+      fx:id="body"
+      styleClass="backgroundLight">
+    <VBox styleClass="backgroundLight">
+        <MenuBar styleClass="backgroundLight">
             <Menu text="Menu">
+                <MenuItem text="Return to Start-Screen" onAction="#returnToStartScreen"/>
             </Menu>
         </MenuBar>
         <Canvas fx:id="gameBoard">
@@ -22,4 +29,14 @@
         </Pane>
     </VBox>
 
+    <VBox fx:id="footer" styleClass="backgroundLight">
+        <TextFlow>
+            <Text styleClass="textLight">Controls:&#160;</Text>
+            <Text styleClass="textLight">P</Text><Text>=Pause&#160;</Text>
+            <Text styleClass="textLight">UP</Text><Text>=Move Up&#160;</Text>
+            <Text styleClass="textLight">RIGHT</Text><Text>=Move Right&#160;</Text>
+            <Text styleClass="textLight">DOWN</Text><Text>=Move Down&#160;</Text>
+            <Text styleClass="textLight">LEFT</Text><Text>=Move Left</Text>
+        </TextFlow>
+    </VBox>
 </VBox>

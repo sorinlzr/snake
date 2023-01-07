@@ -11,14 +11,11 @@
         <MenuBar>
             <Menu text="Menu">
                 <MenuItem text="About" onAction="#showInfoDialog"/>
-                <MenuItem text="Exit" onAction="#onExitButtonClick"/>
             </Menu>
         </MenuBar>
         <ImageView fx:id="logo"/>
     </VBox>
-    <!--<Pane fx:id="gameBoard">
 
-    </Pane>-->
     <VBox>
         <padding>
             <Insets left="10"/>

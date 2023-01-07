@@ -98,8 +98,8 @@ public class GameBoard {
      * It is important to call the {@link #stopGame()} method when the game is over,
      * so that the timer does not continue to run in the background.
      */
-    public void startGame(Stage stage) {
-        initializeBoardObjects(stage);
+    public void startGame() {
+        initializeBoardObjects();
         initializeEvents();
         gameBoard.requestFocus();
 
@@ -116,7 +116,7 @@ public class GameBoard {
     /**
      * Add objects which should be part of the game here.
      */
-    private void initializeBoardObjects(Stage stage) {
+    private void initializeBoardObjects() {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
 
         innerWall = generateRandomWall();

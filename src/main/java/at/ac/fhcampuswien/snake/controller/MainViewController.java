@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.snake.controller;
 
 import at.ac.fhcampuswien.snake.GameBoard;
 import at.ac.fhcampuswien.snake.SnakeApp;
+import at.ac.fhcampuswien.snake.StateManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +23,6 @@ import static at.ac.fhcampuswien.snake.util.Constants.SCREEN_SIZE_MEDIUM;
 public class MainViewController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MainViewController.class);
-
-    private boolean showText = false;
 
     protected Stage stage = null;
     @FXML
@@ -50,17 +49,7 @@ public class MainViewController {
      */
     @FXML
     public void startGame() throws IOException {
-        FXMLLoader gameBoardViewFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("gameboard-view.fxml"));
-        Scene gameScreen = new Scene(gameBoardViewFxmlLoader.load(), SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM);
-        GameboardViewController gameboardViewController = gameBoardViewFxmlLoader.getController();
-        stage.setScene(gameScreen);
-        Canvas gameBoardPane = gameboardViewController.getGameBoard();
-        GameBoard gameBoard = new GameBoard(gameBoardPane);
-        gameBoard.startGame(stage);
-
-        stage.setOnCloseRequest(event -> {
-            gameBoard.stopGame();
-        });
+        StateManager.switchToGameBoardView();
     }
 
     @FXML
