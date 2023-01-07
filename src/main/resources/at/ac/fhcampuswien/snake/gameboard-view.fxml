@@ -13,10 +13,9 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="at.ac.fhcampuswien.snake.controller.GameboardViewController"
       prefHeight="450.0" prefWidth="600.0"
-      fx:id="body"
-      styleClass="backgroundLight">
-    <VBox styleClass="backgroundLight">
-        <MenuBar styleClass="backgroundLight">
+      fx:id="body">
+    <VBox>
+        <MenuBar>
             <Menu text="Menu">
                 <MenuItem text="Return to Start-Screen" onAction="#returnToStartScreen"/>
             </Menu>
@@ -29,7 +28,7 @@
         </Pane>
     </VBox>
 
-    <VBox fx:id="footer" styleClass="backgroundLight">
+    <VBox fx:id="footer">
         <TextFlow>
             <Text styleClass="textLight">Controls:&#160;</Text>
             <Text styleClass="textLight">P</Text><Text>=Pause&#160;</Text>
