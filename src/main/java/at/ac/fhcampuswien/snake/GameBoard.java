@@ -37,6 +37,11 @@ public class GameBoard {
     private final Timer refreshGameBoardTimer;
 
     /**
+     * Indicates whether the game is paused or not.
+     */
+    private boolean isGamePaused = false;
+
+    /**
      * The snake, lol
      */
     private Snake snake;
@@ -71,6 +76,7 @@ public class GameBoard {
     public GameBoard(Canvas gameBoard) {
         this.gameBoard = gameBoard;
         this.gameBoard.requestFocus();
+
         this.score = 0;
 
         this.snakeHead = new Image("graphics/snake/head.png");
@@ -178,6 +184,7 @@ public class GameBoard {
 
     /**
      * Method to draw the checkerboard pattern on the GraphicsContext
+     *
      * @param gc GraphicsContext gc used for all BoardObjects
      */
     private void drawGameboard(GraphicsContext gc) {
@@ -278,6 +285,7 @@ public class GameBoard {
 
     /**
      * Initializes javafx events.
+     * <p>
      * javafx events are events which are triggered by the user.
      * For example a button click or a key press.
      */
@@ -287,17 +295,18 @@ public class GameBoard {
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP -> {
-                    if (snake.getDirection() != DOWN) snake.setDirection(UP);
+                    if (!isGamePaused && snake.getDirection() != DOWN) snake.setDirection(UP);
                 }
                 case DOWN -> {
-                    if (snake.getDirection() != UP) snake.setDirection(DOWN);
+                    if (!isGamePaused && snake.getDirection() != UP) snake.setDirection(DOWN);
                 }
                 case LEFT -> {
-                    if (snake.getDirection() != RIGHT) snake.setDirection(LEFT);
+                    if (!isGamePaused && snake.getDirection() != RIGHT) snake.setDirection(LEFT);
                 }
                 case RIGHT -> {
-                    if (snake.getDirection() != LEFT) snake.setDirection(RIGHT);
+                    if (!isGamePaused && snake.getDirection() != LEFT) snake.setDirection(RIGHT);
                 }
+                case P -> isGamePaused = !isGamePaused;
             }
         });
     }
@@ -312,6 +321,8 @@ public class GameBoard {
      * and it will be handled by the GUI thread as soon as possible.
      */
     private void refreshGameBoard() {
+        if (isGamePaused) return;
+
         Platform.runLater(() -> {
             try {
                 snake.updateSnakePosition();
