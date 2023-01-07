@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
-import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
 import static at.ac.fhcampuswien.snake.util.Constants.*;
+import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
 
 public class GameBoard {
 
@@ -286,10 +286,18 @@ public class GameBoard {
         // Basically the event gets passed as a parameter and can be used inside the parentheses.
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP -> snake.setDirection(UP);
-                case DOWN -> snake.setDirection(DOWN);
-                case LEFT -> snake.setDirection(LEFT);
-                case RIGHT -> snake.setDirection(RIGHT);
+                case UP -> {
+                    if (snake.getDirection() != DOWN) snake.setDirection(UP);
+                }
+                case DOWN -> {
+                    if (snake.getDirection() != UP) snake.setDirection(DOWN);
+                }
+                case LEFT -> {
+                    if (snake.getDirection() != RIGHT) snake.setDirection(LEFT);
+                }
+                case RIGHT -> {
+                    if (snake.getDirection() != LEFT) snake.setDirection(RIGHT);
+                }
             }
         });
     }
@@ -307,13 +315,15 @@ public class GameBoard {
         Platform.runLater(() -> {
             try {
                 snake.updateSnakePosition();
-                // If the snake ate the food with the last "movement" a knew food element gets created.
-                if(null == food) food = new Food(snake);
+                snake.checkForCollisions(innerWall);
+                if (snake.isAlive()){
+                    // If the snake ate the food with the last "movement" a knew food element gets created.
+                    if(null == food) food = new Food(snake);
 
-                gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
-                drawGameboard(gc);
-                drawWalls(gc);
-                drawSnake(gc);
+                    gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
+                    drawGameboard(gc);
+                    drawWalls(gc);
+                    drawSnake(gc);
 
                 /*
                   If the Snake Head moved onto the Food Element, the snake gets longer [via Snake.eats()]
@@ -324,10 +334,12 @@ public class GameBoard {
                        would move onto next.
                            Which would mean, that the food is never shown, but the snake would appear to get longer for no reason.
                  */
-                if(checkIfSnakeHeadIsOnFood()) {
-                    snake.eats();
-                    food = null;
-                }else drawFood(gc); //drawFood(gc);
+                    if(checkIfSnakeHeadIsOnFood()) {
+                        snake.eats();
+                        food = null;
+                    }else drawFood(gc); //drawFood(gc);
+
+                }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
