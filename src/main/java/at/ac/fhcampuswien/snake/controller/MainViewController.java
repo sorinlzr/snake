@@ -1,13 +1,8 @@
 package at.ac.fhcampuswien.snake.controller;
 
-import at.ac.fhcampuswien.snake.GameBoard;
-import at.ac.fhcampuswien.snake.SnakeApp;
-import at.ac.fhcampuswien.snake.StateManager;
+import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -17,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-
-import static at.ac.fhcampuswien.snake.util.Constants.SCREEN_SIZE_MEDIUM;
 
 public class MainViewController {
 

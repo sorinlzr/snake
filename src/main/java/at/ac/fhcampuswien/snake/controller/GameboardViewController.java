@@ -1,15 +1,9 @@
 package at.ac.fhcampuswien.snake.controller;
 
-import at.ac.fhcampuswien.snake.GameBoard;
-import at.ac.fhcampuswien.snake.SnakeApp;
-import at.ac.fhcampuswien.snake.StateManager;
-import javafx.event.ActionEvent;
+import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;

@@ -1,5 +1,7 @@
-package at.ac.fhcampuswien.snake;
+package at.ac.fhcampuswien.snake.util;
 
+import at.ac.fhcampuswien.snake.GameBoard;
+import at.ac.fhcampuswien.snake.SnakeApp;
 import at.ac.fhcampuswien.snake.controller.GameboardViewController;
 import at.ac.fhcampuswien.snake.controller.MainViewController;
 import javafx.fxml.FXMLLoader;
