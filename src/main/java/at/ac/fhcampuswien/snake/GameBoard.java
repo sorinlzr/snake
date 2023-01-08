@@ -10,9 +10,13 @@ import javafx.application.Platform;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.*;
@@ -312,16 +316,25 @@ public class GameBoard {
                     if (!isGamePaused && snake.getDirection() != LEFT) snake.setDirection(RIGHT);
                 }
                 case P -> {
-                    isGamePaused = !isGamePaused;
+                    if (snake.isAlive()) isGamePaused = !isGamePaused;
                 }
                 case ESCAPE -> {
-                    this.stopGame();
+                    if (snake.isAlive()) isGamePaused = true;
 
-                    try {
-                        StateManager.switchToStartView();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "If you return to the Start-Screen while playing the game, you will lose all points. Do you really want to return to the Start-Screen?", ButtonType.YES, ButtonType.NO);
+                    alert.showAndWait();
+
+                    if (alert.getResult() == ButtonType.YES) {
+                        this.stopGame();
+
+                        try {
+                            StateManager.switchToStartView();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
+
+                    this.isGamePaused = false;
                 }
             }
         });
@@ -337,7 +350,15 @@ public class GameBoard {
      * and it will be handled by the GUI thread as soon as possible.
      */
     private void refreshGameBoard() {
-        if (isGamePaused) return;
+        if (isGamePaused) {
+            this.gameBoard.getGraphicsContext2D().setFill(Color.WHITE);
+            this.gameBoard.getGraphicsContext2D().fillRect(OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.9, OBJECT_SIZE_MEDIUM * 2.7, OBJECT_SIZE_MEDIUM * 0.8);
+
+            this.gameBoard.getGraphicsContext2D().setFont(new Font(OBJECT_SIZE_MEDIUM * 0.6));
+            this.gameBoard.getGraphicsContext2D().setFill(Color.BLACK);
+            this.gameBoard.getGraphicsContext2D().fillText("Paused!", OBJECT_SIZE_MEDIUM * 0.6, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM);
+            return;
+        }
 
         Platform.runLater(() -> {
             try {

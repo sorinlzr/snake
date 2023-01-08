@@ -17,18 +17,9 @@ public class GameboardViewController {
     @FXML
     private Canvas gameBoard;
 
-    @FXML
-    private VBox body;
-
-    @FXML
-    private VBox footer;
-
     public void initialize() {
         this.gameBoard.setHeight(GAME_BOARD_SIZE_MEDIUM);
         this.gameBoard.setWidth(GAME_BOARD_SIZE_MEDIUM);
-
-        body.setVgrow(footer, javafx.scene.layout.Priority.ALWAYS);
-        footer.setAlignment(javafx.geometry.Pos.CENTER);
     }
 
     public Canvas getGameBoard() {

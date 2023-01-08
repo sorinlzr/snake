@@ -37,6 +37,8 @@ public class StateManager {
         MainViewController mainViewController = fxmlLoader.getController();
         mainViewController.setStage(stage);
 
+        startScreen.getStylesheets().add("css/mainView.css");
+
         ImageView logo = mainViewController.getLogo();
 
         logo.fitWidthProperty().bind(stage.widthProperty());
@@ -55,8 +57,6 @@ public class StateManager {
         Canvas gameBoardCanvas = gameboardViewController.getGameBoard();
         gameBoard = new GameBoard(gameBoardCanvas);
         gameBoard.startGame();
-
-        gameScreen.getStylesheets().add("css/gameBoardView.css");
 
         stage.setOnCloseRequest(event -> {
             gameBoard.stopGame();

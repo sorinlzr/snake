@@ -3,10 +3,12 @@ package at.ac.fhcampuswien.snake.controller;
 import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +26,22 @@ public class MainViewController {
     @FXML
     private ImageView logo;
 
+    @FXML
+    private VBox body;
+
+    @FXML
+    private VBox footer;
+
+
     public void initialize() {
         Image logo = new Image("graphics/snake_logo.jpg");
         this.logo.setImage(logo);
         this.logo.setPreserveRatio(true);
         this.logo.setSmooth(true);
         this.textBox.setText("\n\n");
+
+        body.setVgrow(footer, javafx.scene.layout.Priority.ALWAYS);
+        footer.setAlignment(Pos.BOTTOM_CENTER);
     }
 
     /**
