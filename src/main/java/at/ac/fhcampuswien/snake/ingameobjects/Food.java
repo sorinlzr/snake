@@ -8,6 +8,11 @@ public class Food{
 
     private final String foodType;
 
+    private final static String[] FOOD_TYPES = new String[]{"Apple.png", "Bannana.png", "Cherry.png",
+            "Grape.png", "Lemon.png", "Orange.png", "Peach.png", "Pear.png", "Pineapple.png", "Plum.png",
+            "Strawberry.png", "Watermelon.png"};
+
+
     /**
      * This Contructor creates a new food Element.
      * It checks for collisions with the SNAKE Object.
@@ -49,9 +54,6 @@ public class Food{
         }while(!isTargetFieldFree);
         position = new Position(foodXCoord,foodYCoord);
 
-        String[] FOOD_TYPES = new String[]{"Apple.png", "Bannana.png", "Cherry.png",
-                "Grape.png", "Lemon.png", "Orange.png", "Peach.png", "Pear.png", "Pineapple.png", "Plum.png",
-                "Strawberry.png", "Watermelon.png"};
         int foodTypeNumber = (int) (Math.random() * FOOD_TYPES.length);
         foodType = FOOD_TYPES[foodTypeNumber];
     }
