@@ -114,7 +114,7 @@ public class GameBoard {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
 
         innerWall = generateRandomWall();
-        food = new Food(snake);
+        food = new Food(snake, innerWall);
         gc = gameBoard.getGraphicsContext2D();
 
         drawGameboard(gc);
@@ -142,8 +142,9 @@ public class GameBoard {
     /**
      * This method generates a random coordinate for a wall on the board.
      * It adds the snake's position to a Set of exclusions to avoid creating the wall on top of it
-     * @param rand - the random generator
-     * @param wallLength - the total wall length
+     *
+     * @param rand         - the random generator
+     * @param wallLength   - the total wall length
      * @param isHorizontal - the type of coordinate to generate
      * @return a random int for the starting position of the wall
      */
@@ -178,6 +179,7 @@ public class GameBoard {
 
     /**
      * Method to draw the checkerboard pattern on the GraphicsContext
+     *
      * @param gc GraphicsContext gc used for all BoardObjects
      */
     private void drawGameboard(GraphicsContext gc) {
@@ -194,7 +196,7 @@ public class GameBoard {
     }
 
     private void drawFood(GraphicsContext gc) {
-        Image foodImg = new Image ("graphics/fruit/" + food.getFoodType());
+        Image foodImg = new Image("graphics/fruit/" + food.getFoodType());
         gc.drawImage(foodImg, food.getLocation().getX(), food.getLocation().getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
     }
 
@@ -225,14 +227,15 @@ public class GameBoard {
         }
     }
 
-    private boolean checkIfSnakeHeadIsOnFood(){
-        return  (snake.getSegments().get(0).getX() == food.getLocation().getX() &&
-                 snake.getSegments().get(0).getY() == food.getLocation().getY());
+    private boolean checkIfSnakeHeadIsOnFood() {
+        return (snake.getSegments().get(0).getX() == food.getLocation().getX() &&
+                snake.getSegments().get(0).getY() == food.getLocation().getY());
     }
 
     /**
      * This method centralizes the methods that draw walls in the game - the perimeter ones and walls that are inside
      * the game area and used as obstacles, if any
+     *
      * @param gc the current graphics context
      */
     private void drawWalls(GraphicsContext gc) {
@@ -244,6 +247,7 @@ public class GameBoard {
      * This method only draws the perimeter walls, without using the Wall class, to avoid overhead for collision check
      * Collision with these walls should simply be a check if the snake is outside the gameboard area, subtracting
      * the wall's thickness
+     *
      * @param gc the current graphics context
      */
     private void drawPerimeterWalls(GraphicsContext gc) {
@@ -316,9 +320,9 @@ public class GameBoard {
             try {
                 snake.updateSnakePosition();
                 snake.checkForCollisions(innerWall);
-                if (snake.isAlive()){
+                if (snake.isAlive()) {
                     // If the snake ate the food with the last "movement" a knew food element gets created.
-                    if(null == food) food = new Food(snake);
+                    if (null == food) food = new Food(snake, innerWall);
 
                     gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
                     drawGameboard(gc);
@@ -334,10 +338,11 @@ public class GameBoard {
                        would move onto next.
                            Which would mean, that the food is never shown, but the snake would appear to get longer for no reason.
                  */
-                    if(checkIfSnakeHeadIsOnFood()) {
+                    if (checkIfSnakeHeadIsOnFood()) {
                         snake.eats();
+                        score += 1;
                         food = null;
-                    }else drawFood(gc); //drawFood(gc);
+                    } else drawFood(gc); //drawFood(gc);
 
                 }
 
