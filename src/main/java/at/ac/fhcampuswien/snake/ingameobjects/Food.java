@@ -13,26 +13,38 @@ public class Food{
      * It checks for collisions with the SNAKE Object.
      * By random there will also be a FoodType assigned.
      */
-    public Food(Snake snake) {
-        boolean isTargetFieldFree = true;
+    public Food(Snake snake, Wall wall) {
+        boolean isTargetFieldFree;
         int foodXCoord;
         int foodYCoord;
-        int segmentNumber = Constants.SCREEN_SIZE_MEDIUM / Constants.OBJECT_SIZE_MEDIUM;
+        int segmentNumberX = Constants.NUMBER_OF_ROWS_AND_COLS - 2 ;
+        int segmentNumberY = Constants.NUMBER_OF_ROWS_AND_COLS - 3 ;
         do {
-            foodXCoord = (int) (Math.random() * segmentNumber);
-            foodYCoord = (int) (Math.random() * segmentNumber);
+            isTargetFieldFree = true;
+            foodXCoord = (int) (Math.random() * segmentNumberX) + 1;
+            foodYCoord = (int) (Math.random() * segmentNumberY) + 1;
 
             // Since the Location of the Elements of the Snake is in PX, we need to multiply
             // the row and column number by the Object Size in PX.
             foodXCoord *= Constants.OBJECT_SIZE_MEDIUM;
             foodYCoord *= Constants.OBJECT_SIZE_MEDIUM;
 
+            // Check if calculated Position is inhibited by the snake
             int i=0;
             do {
                 if(snake.getSegments().get(i).getX() == foodXCoord &&
                         snake.getSegments().get(i).getY() == foodYCoord) isTargetFieldFree = false;
                 i++;
             } while (isTargetFieldFree && i < snake.getSegments().size());
+
+            // Check if calculated Position is inhibited by the wall
+            int j=0;
+            do {
+                if(wall.getSegments().get(j).getX() == foodXCoord &&
+                        wall.getSegments().get(j).getY() == foodYCoord) isTargetFieldFree = false;
+                j++;
+            } while (isTargetFieldFree && j < wall.getSegments().size());
+
 
         }while(!isTargetFieldFree);
         position = new Position(foodXCoord,foodYCoord);

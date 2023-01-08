@@ -114,7 +114,7 @@ public class GameBoard {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
 
         innerWall = generateRandomWall();
-        food = new Food(snake);
+        food = new Food(snake,innerWall);
         gc = gameBoard.getGraphicsContext2D();
 
         drawGameboard(gc);
@@ -318,7 +318,7 @@ public class GameBoard {
                 snake.checkForCollisions(innerWall);
                 if (snake.isAlive()){
                     // If the snake ate the food with the last "movement" a knew food element gets created.
-                    if(null == food) food = new Food(snake);
+                    if(null == food) food = new Food(snake,innerWall);
 
                     gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
                     drawGameboard(gc);
@@ -336,6 +336,7 @@ public class GameBoard {
                  */
                     if(checkIfSnakeHeadIsOnFood()) {
                         snake.eats();
+                        score += 1;
                         food = null;
                     }else drawFood(gc); //drawFood(gc);
 
