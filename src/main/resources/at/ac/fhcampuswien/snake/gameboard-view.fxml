@@ -17,7 +17,7 @@
     <VBox>
         <MenuBar>
             <Menu text="Menu">
-                <MenuItem text="Return to Start-Screen" onAction="#returnToStartScreen"/>
+                <MenuItem text="Return to Start-Screen (ESC)" onAction="#returnToStartScreen"/>
             </Menu>
         </MenuBar>
         <Canvas fx:id="gameBoard">
