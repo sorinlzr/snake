@@ -3,24 +3,24 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.MenuItem?>
+
+<?import javafx.scene.text.TextFlow?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="at.ac.fhcampuswien.snake.controller.GameboardViewController"
-      prefHeight="450.0" prefWidth="600.0">
+      fx:controller="at.ac.fhcampuswien.snake.controller.GameViewController"
+      prefHeight="575.0" prefWidth="500.0">
     <VBox>
         <MenuBar>
             <Menu text="Menu">
                 <MenuItem text="Return to Start-Screen (ESC)" onAction="#returnToStartScreen"/>
             </Menu>
         </MenuBar>
-        <Canvas fx:id="gameBoard">
+        <Canvas fx:id="gameBoardCanvas">
 
         </Canvas>
-        <Canvas fx:id="scoreBoard">
+        <Canvas fx:id="scoreBoardCanvas">
 
         </Canvas>
     </VBox>

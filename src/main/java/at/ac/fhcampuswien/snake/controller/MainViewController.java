@@ -54,7 +54,7 @@ public class MainViewController {
      */
     @FXML
     public void startGame() throws IOException {
-        StateManager.switchToGameBoardView();
+        StateManager.switchToGameView();
     }
 
     @FXML
