@@ -4,14 +4,12 @@ import at.ac.fhcampuswien.snake.ingameobjects.Food;
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
 import at.ac.fhcampuswien.snake.ingameobjects.Snake;
 import at.ac.fhcampuswien.snake.ingameobjects.Wall;
-import at.ac.fhcampuswien.snake.util.Constants;
 import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.application.Platform;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,8 +19,8 @@ import javafx.scene.text.Font;
 import java.io.IOException;
 import java.util.*;
 
-import static at.ac.fhcampuswien.snake.util.Constants.*;
 import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
+import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 public class GameBoard {
 
@@ -304,16 +302,28 @@ public class GameBoard {
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP -> {
-                    if (!isGamePaused && snake.getDirection() != DOWN) snake.setDirection(UP);
+                    if (!isGamePaused && snake.getDirection() != DOWN && snake.isPositionUpdated()) {
+                        snake.setDirection(UP);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case DOWN -> {
-                    if (!isGamePaused && snake.getDirection() != UP) snake.setDirection(DOWN);
+                    if (!isGamePaused && snake.getDirection() != UP && snake.isPositionUpdated()) {
+                        snake.setDirection(DOWN);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case LEFT -> {
-                    if (!isGamePaused && snake.getDirection() != RIGHT) snake.setDirection(LEFT);
+                    if (!isGamePaused && snake.getDirection() != RIGHT && snake.isPositionUpdated()) {
+                        snake.setDirection(LEFT);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case RIGHT -> {
-                    if (!isGamePaused && snake.getDirection() != LEFT) snake.setDirection(RIGHT);
+                    if (!isGamePaused && snake.getDirection() != LEFT && snake.isPositionUpdated()) {
+                        snake.setDirection(RIGHT);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case P -> {
                     if (snake.isAlive()) isGamePaused = !isGamePaused;
