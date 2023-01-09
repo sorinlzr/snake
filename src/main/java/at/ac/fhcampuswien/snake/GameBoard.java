@@ -4,15 +4,21 @@ import at.ac.fhcampuswien.snake.ingameobjects.Food;
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
 import at.ac.fhcampuswien.snake.ingameobjects.Snake;
 import at.ac.fhcampuswien.snake.ingameobjects.Wall;
+import at.ac.fhcampuswien.snake.util.Constants;
+import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.application.Platform;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
+import java.io.IOException;
 import java.util.*;
 
 import static at.ac.fhcampuswien.snake.util.Constants.*;
@@ -35,6 +41,11 @@ public class GameBoard {
      * The timer which executes a {@link #refreshGameBoardTimerTask} every n milliseconds.
      */
     private final Timer refreshGameBoardTimer;
+
+    /**
+     * Indicates whether the game is paused or not.
+     */
+    private boolean isGamePaused = false;
 
     /**
      * The snake, lol
@@ -71,6 +82,7 @@ public class GameBoard {
     public GameBoard(Canvas gameBoard) {
         this.gameBoard = gameBoard;
         this.gameBoard.requestFocus();
+
         this.score = 0;
 
         this.snakeHead = new Image("graphics/snake/head.png");
@@ -92,8 +104,8 @@ public class GameBoard {
      * It is important to call the {@link #stopGame()} method when the game is over,
      * so that the timer does not continue to run in the background.
      */
-    public void startGame(Stage stage) {
-        initializeBoardObjects(stage);
+    public void startGame() {
+        initializeBoardObjects();
         initializeEvents();
         gameBoard.requestFocus();
 
@@ -110,7 +122,7 @@ public class GameBoard {
     /**
      * Add objects which should be part of the game here.
      */
-    private void initializeBoardObjects(Stage stage) {
+    private void initializeBoardObjects() {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
 
         innerWall = generateRandomWall();
@@ -149,7 +161,7 @@ public class GameBoard {
      * @return a random int for the starting position of the wall
      */
     private int getRandomWallPosition(Random rand, int wallLength, boolean isHorizontal) {
-        int range = SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * (wallLength + 2);
+        int range = GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * (wallLength + 2);
 
         Set<Integer> exclusions = new HashSet<>();
         int segmentPosition;
@@ -183,8 +195,8 @@ public class GameBoard {
      * @param gc GraphicsContext gc used for all BoardObjects
      */
     private void drawGameboard(GraphicsContext gc) {
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i++) {
-            for (int j = 0; j < SCREEN_SIZE_MEDIUM; j++) {
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i++) {
+            for (int j = 0; j < GAME_BOARD_SIZE_MEDIUM; j++) {
                 if ((i + j) % 2 == 0) {
                     gc.setFill(Color.web(GAMEBOARD_COLOR_LIGHT));
                 } else {
@@ -252,24 +264,24 @@ public class GameBoard {
      */
     private void drawPerimeterWalls(GraphicsContext gc) {
         //Upper wall
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
             gc.drawImage(wallPattern, i, 0, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
 
         //Bottom wall - we subtract 2*OBJECT_SIZE_MEDIUM from the Y position to make it visible inside the Gameboard area
         // and to account for the Menu bar
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
-            gc.drawImage(wallPattern, i, SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 2, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+            gc.drawImage(wallPattern, i, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
 
         //Left wall
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
             gc.drawImage(wallPattern, 0, i, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
 
         //Right wall - we subtract OBJECT_SIZE_MEDIUM from the X position to make it visible inside the Gameboard area
-        for (int i = 0; i < SCREEN_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
-            gc.drawImage(wallPattern, SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM, i, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+        for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i += OBJECT_SIZE_MEDIUM) {
+            gc.drawImage(wallPattern, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM, i, OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
     }
 
@@ -282,6 +294,7 @@ public class GameBoard {
 
     /**
      * Initializes javafx events.
+     * <p>
      * javafx events are events which are triggered by the user.
      * For example a button click or a key press.
      */
@@ -291,16 +304,37 @@ public class GameBoard {
         gameBoard.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP -> {
-                    if (snake.getDirection() != DOWN) snake.setDirection(UP);
+                    if (!isGamePaused && snake.getDirection() != DOWN) snake.setDirection(UP);
                 }
                 case DOWN -> {
-                    if (snake.getDirection() != UP) snake.setDirection(DOWN);
+                    if (!isGamePaused && snake.getDirection() != UP) snake.setDirection(DOWN);
                 }
                 case LEFT -> {
-                    if (snake.getDirection() != RIGHT) snake.setDirection(LEFT);
+                    if (!isGamePaused && snake.getDirection() != RIGHT) snake.setDirection(LEFT);
                 }
                 case RIGHT -> {
-                    if (snake.getDirection() != LEFT) snake.setDirection(RIGHT);
+                    if (!isGamePaused && snake.getDirection() != LEFT) snake.setDirection(RIGHT);
+                }
+                case P -> {
+                    if (snake.isAlive()) isGamePaused = !isGamePaused;
+                }
+                case ESCAPE -> {
+                    if (snake.isAlive()) isGamePaused = true;
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "If you return to the Start-Screen while playing the game, you will lose all points. Do you really want to return to the Start-Screen?", ButtonType.YES, ButtonType.NO);
+                    alert.showAndWait();
+
+                    if (alert.getResult() == ButtonType.YES) {
+                        this.stopGame();
+
+                        try {
+                            StateManager.switchToStartView();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    this.isGamePaused = false;
                 }
             }
         });
@@ -316,6 +350,16 @@ public class GameBoard {
      * and it will be handled by the GUI thread as soon as possible.
      */
     private void refreshGameBoard() {
+        if (isGamePaused) {
+            this.gameBoard.getGraphicsContext2D().setFill(Color.WHITE);
+            this.gameBoard.getGraphicsContext2D().fillRect(OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.9, OBJECT_SIZE_MEDIUM * 2.7, OBJECT_SIZE_MEDIUM * 0.8);
+
+            this.gameBoard.getGraphicsContext2D().setFont(new Font(OBJECT_SIZE_MEDIUM * 0.6));
+            this.gameBoard.getGraphicsContext2D().setFill(Color.BLACK);
+            this.gameBoard.getGraphicsContext2D().fillText("Paused!", OBJECT_SIZE_MEDIUM * 0.6, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM);
+            return;
+        }
+
         Platform.runLater(() -> {
             try {
                 snake.updateSnakePosition();

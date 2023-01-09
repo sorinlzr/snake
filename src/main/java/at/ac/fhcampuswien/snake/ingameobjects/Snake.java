@@ -17,7 +17,7 @@ public class Snake {
 
     public Snake(int initialSize, Direction initialDirection) {
         int initialLength = 0;
-        Position initialPosition = new Position(SCREEN_SIZE_MEDIUM / 2, SCREEN_SIZE_MEDIUM / 2);
+        Position initialPosition = new Position(GAME_BOARD_SIZE_MEDIUM / 2, GAME_BOARD_SIZE_MEDIUM / 2);
 
         // TODO use KeyCode Enums instead of custom ones. KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT
         switch (initialDirection) {
@@ -69,8 +69,8 @@ public class Snake {
         Position head = this.segments.get(0);
 
         // Checks if snake goes out of the game border.
-        if (head.getX() < OBJECT_SIZE_MEDIUM || head.getX() >= SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM ||
-                head.getY() < OBJECT_SIZE_MEDIUM || head.getY() >= SCREEN_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 2) {
+        if (head.getX() < OBJECT_SIZE_MEDIUM || head.getX() >= GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM ||
+                head.getY() < OBJECT_SIZE_MEDIUM || head.getY() >= GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM) {
             this.isAlive = false;
         }
 

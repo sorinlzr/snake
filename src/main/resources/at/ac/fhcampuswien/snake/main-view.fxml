@@ -4,21 +4,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
 <VBox fx:controller="at.ac.fhcampuswien.snake.controller.MainViewController"
-      xmlns:fx="http://javafx.com/fxml">
+      xmlns:fx="http://javafx.com/fxml" fx:id="body">
     <VBox>
         <MenuBar>
             <Menu text="Menu">
                 <MenuItem text="About" onAction="#showInfoDialog"/>
-                <MenuItem text="Exit" onAction="#onExitButtonClick"/>
             </Menu>
         </MenuBar>
         <ImageView fx:id="logo"/>
     </VBox>
-    <!--<Pane fx:id="gameBoard">
 
-    </Pane>-->
     <VBox>
         <padding>
             <Insets left="10"/>
@@ -35,4 +33,15 @@
         <Button text="Exit" onAction="#onExitButtonClick"
                 GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
     </GridPane>
+
+    <VBox fx:id="footer">
+        <TextFlow>
+            <Text styleClass="textDark">Controls:&#160;</Text>
+            <Text styleClass="textDark">P</Text><Text>=Pause&#160;</Text>
+            <Text styleClass="textDark">UP</Text><Text>=Move Up&#160;</Text>
+            <Text styleClass="textDark">RIGHT</Text><Text>=Move Right&#160;</Text>
+            <Text styleClass="textDark">DOWN</Text><Text>=Move Down&#160;</Text>
+            <Text styleClass="textDark">LEFT</Text><Text>=Move Left</Text>
+        </TextFlow>
+    </VBox>
 </VBox>
