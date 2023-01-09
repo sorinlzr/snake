@@ -17,9 +17,9 @@
         <Canvas fx:id="gameBoard">
 
         </Canvas>
-        <Pane fx:id="scoreBoard">
+        <Canvas fx:id="scoreBoard">
 
-        </Pane>
+        </Canvas>
     </VBox>
 
 </VBox>

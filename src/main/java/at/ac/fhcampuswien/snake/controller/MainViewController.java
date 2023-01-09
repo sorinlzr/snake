@@ -51,11 +51,11 @@ public class MainViewController {
     @FXML
     public void startGame() throws IOException {
         FXMLLoader gameBoardViewFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("gameboard-view.fxml"));
-        Scene gameScreen = new Scene(gameBoardViewFxmlLoader.load(), SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM);
+        Scene gameScreen = new Scene(gameBoardViewFxmlLoader.load(), SCREEN_SIZE_MEDIUM, SCREEN_SIZE_MEDIUM + SCREEN_SIZE_MEDIUM/10);
         GameboardViewController gameboardViewController = gameBoardViewFxmlLoader.getController();
         stage.setScene(gameScreen);
-        Canvas gameBoardPane = gameboardViewController.getGameBoard();
-        GameBoard gameBoard = new GameBoard(gameBoardPane);
+        Canvas gameBoardCanvas = gameboardViewController.getGameBoard();
+        GameBoard gameBoard = new GameBoard(gameBoardCanvas);
         gameBoard.startGame(stage);
 
         stage.setOnCloseRequest(event -> {
