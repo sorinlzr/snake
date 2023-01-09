@@ -65,7 +65,7 @@ public class StateManager {
         scoreBoard = new ScoreBoard(scoreBoardCanvas);
         gameBoard = new GameBoard(gameBoardCanvas);
         gameBoard.startGame();
-        //scoreBoard.drawScoreBoard();
+
         stage.setOnCloseRequest(event -> {
             gameBoard.stopGame();
         });
