@@ -28,7 +28,7 @@ public class GameBoard {
 
     private GraphicsContext gc;
     /**
-     * The pane that is used to display the game board.
+     * The canvas that is used to display the game board.
      */
     private final Canvas gameBoard;
 
@@ -62,6 +62,14 @@ public class GameBoard {
      * The score of the current game.
      */
     private int score;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     /**
      * Image containing the snake's head
@@ -108,7 +116,7 @@ public class GameBoard {
         initializeBoardObjects();
         initializeEvents();
         gameBoard.requestFocus();
-
+        this.score=0;
         refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 200);
     }
 
