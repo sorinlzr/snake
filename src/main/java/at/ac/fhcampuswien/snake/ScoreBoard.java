@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import at.ac.fhcampuswien.snake.util.Constants;
 
 import java.util.*;
 
@@ -19,13 +20,21 @@ import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
 import static at.ac.fhcampuswien.snake.util.Constants.*;
 public class ScoreBoard {
     private GraphicsContext gc;
-    private final Canvas scoreBoard;
-    public ScoreBoard(Canvas scoreBoard){
-        this.scoreBoard = scoreBoard;
+    private final Canvas scoreBoardCanvas;
+    public ScoreBoard(Canvas scoreBoardCanvas){
+        this.scoreBoardCanvas = scoreBoardCanvas;
+        this.gc = scoreBoardCanvas.getGraphicsContext2D();
     }
 
-    public void drawScoreBoard(GraphicsContext gc){
-        gc.setFill(Color.LIGHTSKYBLUE);
-        gc.fillRect();
+    public void drawScoreBoard(){
+        gc.setFill(Color.RED);
+        gc.fillRect(0,GAME_BOARD_SIZE_MEDIUM, SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
+    }
+
+    public GraphicsContext getGc(){return this.gc;}
+
+    public void updateScoreBoard(int newScore){
+        // draw newSore on the Screen
+
     }
 }

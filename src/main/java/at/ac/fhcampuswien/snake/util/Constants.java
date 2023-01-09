@@ -6,7 +6,10 @@ public class Constants {
 
     public static final int GAME_BOARD_SIZE_MEDIUM = 500;
 
-    public static final int APP_HEIGHT_MEDIUM = GAME_BOARD_SIZE_MEDIUM + 25;
+    public static final int SCOREBOARD_HEIGHT = GAME_BOARD_SIZE_MEDIUM/10;
+    public static final int SCOREBOARD_WIDTH = GAME_BOARD_SIZE_MEDIUM;
+
+    public static final int APP_HEIGHT_MEDIUM = GAME_BOARD_SIZE_MEDIUM + SCOREBOARD_HEIGHT + 25; // + 25 for menu bar
     public static final int APP_WIDTH_MEDIUM = GAME_BOARD_SIZE_MEDIUM;
 
     public static final int NUMBER_OF_ROWS_AND_COLS = 20;

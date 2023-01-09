@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.snake.util;
 
 import at.ac.fhcampuswien.snake.GameBoard;
+import at.ac.fhcampuswien.snake.ScoreBoard;
 import at.ac.fhcampuswien.snake.SnakeApp;
 import at.ac.fhcampuswien.snake.controller.GameboardViewController;
 import at.ac.fhcampuswien.snake.controller.MainViewController;
@@ -21,6 +22,12 @@ public class StateManager {
     private static Stage stage = null;
 
     private static GameBoard gameBoard;
+
+    private static ScoreBoard scoreBoard;
+
+    public static ScoreBoard getScoreBoard() {
+        return scoreBoard;
+    }
 
     public static void initializeStage(Stage stage) {
         StateManager.stage = stage;
@@ -47,17 +54,18 @@ public class StateManager {
         stage.show();
     }
 
-    public static void switchToGameBoardView() throws IOException {
-        FXMLLoader gameBoardViewFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("gameboard-view.fxml"));
+    public static void switchToGameView() throws IOException {
+        FXMLLoader gameBoardViewFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("game-view.fxml"));
         Scene gameScreen = new Scene(gameBoardViewFxmlLoader.load(), APP_WIDTH_MEDIUM, APP_HEIGHT_MEDIUM);
         GameboardViewController gameboardViewController = gameBoardViewFxmlLoader.getController();
         gameboardViewController.setStage(stage);
         stage.setScene(gameScreen);
-
-        Canvas gameBoardCanvas = gameboardViewController.getGameBoard();
+        Canvas gameBoardCanvas = gameboardViewController.getGameBoardCanvas();
+        Canvas scoreBoardCanvas = gameboardViewController.getScoreBoardCanvas();
+        scoreBoard = new ScoreBoard(scoreBoardCanvas);
         gameBoard = new GameBoard(gameBoardCanvas);
         gameBoard.startGame();
-
+        //scoreBoard.drawScoreBoard();
         stage.setOnCloseRequest(event -> {
             gameBoard.stopGame();
         });

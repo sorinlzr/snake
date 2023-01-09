@@ -3,36 +3,35 @@ package at.ac.fhcampuswien.snake.controller;
 import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static at.ac.fhcampuswien.snake.util.Constants.GAME_BOARD_SIZE_MEDIUM;
+import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 public class GameboardViewController {
 
     protected Stage stage = null;
 
     @FXML
-    private Canvas gameBoard;
+    private Canvas gameBoardCanvas;
     @FXML
-    private Canvas scoreBoard;
+    private Canvas scoreBoardCanvas;
 
     public void initialize() {
-        this.gameBoard.setHeight(GAME_BOARD_SIZE_MEDIUM);
-        this.gameBoard.setWidth(GAME_BOARD_SIZE_MEDIUM);
-        this.scoreBoard.setHeight(SCREEN_SIZE_MEDIUM/10);
-        this.scoreBoard.setWidth(SCREEN_SIZE_MEDIUM);
-        this.scoreBoard.setLayoutX(0);
-        this.scoreBoard.setLayoutY(SCREEN_SIZE_MEDIUM);
+        this.gameBoardCanvas.setHeight(GAME_BOARD_SIZE_MEDIUM);
+        this.gameBoardCanvas.setWidth(GAME_BOARD_SIZE_MEDIUM);
+        // new Canvas for ScoreBoard
+        this.scoreBoardCanvas = new Canvas(SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
     }
 
-    public Canvas getGameBoard() {
-        return this.gameBoard;
+    public Canvas getGameBoardCanvas() {
+        return this.gameBoardCanvas;
     }
 
-    public Canvas getScoreBoard(){ return this.scoreBoard; }
+    public Canvas getScoreBoardCanvas(){
+        return this.scoreBoardCanvas;
+    }
 
     @FXML
     public void returnToStartScreen() throws IOException {
