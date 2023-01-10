@@ -10,7 +10,7 @@ import static at.ac.fhcampuswien.snake.util.Constants.*;
 public class Snake {
 
     private int length;
-
+    private boolean positionUpdated;
     private boolean isAlive;
     private Direction direction;
     private final List<Position> segments = new ArrayList<>();
@@ -125,9 +125,18 @@ public class Snake {
 
         segments.add(0, newHead);
         segments.remove(segments.size() - 1);
+        this.positionUpdated = true;
     }
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public boolean isPositionUpdated() {
+        return positionUpdated;
+    }
+
+    public void setPositionUpdated(boolean positionUpdated) {
+        this.positionUpdated = positionUpdated;
     }
 }
