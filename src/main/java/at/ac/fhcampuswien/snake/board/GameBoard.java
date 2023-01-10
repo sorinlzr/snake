@@ -338,7 +338,7 @@ public class GameBoard {
                 case ESCAPE -> {
                     if (snake.isAlive()) isGamePaused = true;
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "If you return to the Start-Screen while playing the game, you will lose all points. Do you really want to return to the Start-Screen?", ButtonType.YES, ButtonType.NO);
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "If you return to the Start-Screen while playing the game,\nyou will lose all points.\nDo you really want to return to the Start-Screen?", ButtonType.YES, ButtonType.NO);
                     alert.showAndWait();
 
                     if (alert.getResult() == ButtonType.YES) {
