@@ -46,12 +46,14 @@ public class Food {
             } while (isTargetFieldFree && i < snake.getSegments().size());
 
             // Check if calculated Position is inhibited by the wall
-            int j = 0;
-            do {
-                if (wall.getSegments().get(j).getX() == foodXCoord &&
-                        wall.getSegments().get(j).getY() == foodYCoord) isTargetFieldFree = false;
-                j++;
-            } while (isTargetFieldFree && j < wall.getSegments().size());
+            if (wall != null) {
+                int j = 0;
+                do {
+                    if (wall.getSegments().get(j).getX() == foodXCoord &&
+                            wall.getSegments().get(j).getY() == foodYCoord) isTargetFieldFree = false;
+                    j++;
+                } while (isTargetFieldFree && j < wall.getSegments().size());
+            }
 
 
         } while (!isTargetFieldFree);
