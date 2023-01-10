@@ -19,8 +19,8 @@ import javafx.scene.text.Font;
 import java.io.IOException;
 import java.util.*;
 
-import static at.ac.fhcampuswien.snake.util.Constants.*;
 import static at.ac.fhcampuswien.snake.util.Constants.Direction.*;
+import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 public class GameBoard {
 
@@ -309,16 +309,28 @@ public class GameBoard {
         gameBoardCanvas.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP -> {
-                    if (!isGamePaused && snake.getDirection() != DOWN) snake.setDirection(UP);
+                    if (!isGamePaused && snake.getDirection() != DOWN && snake.isPositionUpdated()) {
+                        snake.setDirection(UP);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case DOWN -> {
-                    if (!isGamePaused && snake.getDirection() != UP) snake.setDirection(DOWN);
+                    if (!isGamePaused && snake.getDirection() != UP && snake.isPositionUpdated()) {
+                        snake.setDirection(DOWN);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case LEFT -> {
-                    if (!isGamePaused && snake.getDirection() != RIGHT) snake.setDirection(LEFT);
+                    if (!isGamePaused && snake.getDirection() != RIGHT && snake.isPositionUpdated()) {
+                        snake.setDirection(LEFT);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case RIGHT -> {
-                    if (!isGamePaused && snake.getDirection() != LEFT) snake.setDirection(RIGHT);
+                    if (!isGamePaused && snake.getDirection() != LEFT && snake.isPositionUpdated()) {
+                        snake.setDirection(RIGHT);
+                        snake.setPositionUpdated(false);
+                    }
                 }
                 case P -> {
                     if (snake.isAlive()) isGamePaused = !isGamePaused;
