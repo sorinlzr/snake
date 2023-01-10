@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.snake;
+package at.ac.fhcampuswien.snake.board;
 
 import at.ac.fhcampuswien.snake.ingameobjects.Food;
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
@@ -26,9 +26,9 @@ public class GameBoard {
 
     private GraphicsContext gc;
     /**
-     * The pane that is used to display the game board.
+     * The canvas that is used to display the game board.
      */
-    private final Canvas gameBoard;
+    private final Canvas gameBoardCanvas;
 
     /**
      * A task which is executed by {@link #refreshGameBoardTimer}.
@@ -61,6 +61,14 @@ public class GameBoard {
      */
     private int score;
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     /**
      * Image containing the snake's head
      */
@@ -75,12 +83,12 @@ public class GameBoard {
      * Constructor for GameBoard.
      * Requests focus for the game board, so that key events get recognized.
      *
-     * @param gameBoard Pane to draw on
+     * @param gameBoardCanvas Canvas to draw on
      */
-    public GameBoard(Canvas gameBoard) {
-        this.gameBoard = gameBoard;
-        this.gameBoard.requestFocus();
-
+    public GameBoard(Canvas gameBoardCanvas) {
+        this.gameBoardCanvas = gameBoardCanvas;
+        this.gameBoardCanvas.requestFocus();
+        this.gc = gameBoardCanvas.getGraphicsContext2D();
         this.score = 0;
 
         this.snakeHead = new Image("graphics/snake/head.png");
@@ -105,8 +113,9 @@ public class GameBoard {
     public void startGame() {
         initializeBoardObjects();
         initializeEvents();
-        gameBoard.requestFocus();
-
+        gameBoardCanvas.requestFocus();
+        this.score=0;
+        StateManager.getScoreBoard().drawScoreBoard(this.getScore());
         refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 200);
     }
 
@@ -122,10 +131,8 @@ public class GameBoard {
      */
     private void initializeBoardObjects() {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
-
         innerWall = generateRandomWall();
         food = new Food(snake, innerWall);
-        gc = gameBoard.getGraphicsContext2D();
 
         drawGameboard(gc);
         drawWalls(gc);
@@ -299,7 +306,7 @@ public class GameBoard {
     private void initializeEvents() {
         // Checkout https://www.w3schools.com/java/java_lambda.asp for more information about lambdas.
         // Basically the event gets passed as a parameter and can be used inside the parentheses.
-        gameBoard.setOnKeyPressed(event -> {
+        gameBoardCanvas.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP -> {
                     if (!isGamePaused && snake.getDirection() != DOWN && snake.isPositionUpdated()) {
@@ -361,12 +368,12 @@ public class GameBoard {
      */
     private void refreshGameBoard() {
         if (isGamePaused) {
-            this.gameBoard.getGraphicsContext2D().setFill(Color.WHITE);
-            this.gameBoard.getGraphicsContext2D().fillRect(OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.9, OBJECT_SIZE_MEDIUM * 2.7, OBJECT_SIZE_MEDIUM * 0.8);
+            this.gc.setFill(Color.WHITE);
+            this.gc.fillRect(OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.9, OBJECT_SIZE_MEDIUM * 2.7, OBJECT_SIZE_MEDIUM * 0.8);
 
-            this.gameBoard.getGraphicsContext2D().setFont(new Font(OBJECT_SIZE_MEDIUM * 0.6));
-            this.gameBoard.getGraphicsContext2D().setFill(Color.BLACK);
-            this.gameBoard.getGraphicsContext2D().fillText("Paused!", OBJECT_SIZE_MEDIUM * 0.6, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM);
+            this.gc.setFont(new Font(OBJECT_SIZE_MEDIUM * 0.6));
+            this.gc.setFill(Color.BLACK);
+            this.gc.fillText("Paused!", OBJECT_SIZE_MEDIUM * 0.6, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM);
             return;
         }
 
@@ -378,7 +385,7 @@ public class GameBoard {
                     // If the snake ate the food with the last "movement" a knew food element gets created.
                     if (null == food) food = new Food(snake, innerWall);
 
-                    gc.clearRect(0, 0, gameBoard.getWidth(), gameBoard.getHeight());
+                    gc.clearRect(0, 0, gameBoardCanvas.getWidth(), gameBoardCanvas.getHeight());
                     drawGameboard(gc);
                     drawWalls(gc);
                     drawSnake(gc);
@@ -395,6 +402,7 @@ public class GameBoard {
                     if (checkIfSnakeHeadIsOnFood()) {
                         snake.eats();
                         score += 1;
+                        StateManager.getScoreBoard().drawScoreBoard(this.getScore());
                         food = null;
                     } else drawFood(gc); //drawFood(gc);
 
