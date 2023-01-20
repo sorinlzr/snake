@@ -52,6 +52,9 @@ public class GameBoard {
     private Food regularFood;
     private Food specialFood;
 
+    private String previousRegularFoodType;
+    private String previousSpecialFoodType;
+
     private int foodsEatenSinceLastSpecialFood;
     private int foodsToEatUntilNextSpecialFood;
 
@@ -137,10 +140,10 @@ public class GameBoard {
     private void initializeBoardObjects() {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
         innerWall = generateRandomWall();
-        regularFood = new Food(snake, innerWall, null, false);
-        // range 4 - 6
-        foodsToEatUntilNextSpecialFood=(int) (4 + (Math.random() * 2));
-        drawGameboard(gc);
+        regularFood = new Food(snake, innerWall, null, false, previousRegularFoodType);
+        // range 4 - 10
+        foodsToEatUntilNextSpecialFood=(int) (3 + (Math.random() * 10));
+        drawGameBoard(gc);
         drawWalls(gc);
         drawSnake(gc);
     }
@@ -205,7 +208,7 @@ public class GameBoard {
      *
      * @param gc GraphicsContext gc used for all BoardObjects
      */
-    private void drawGameboard(GraphicsContext gc) {
+    private void drawGameBoard(GraphicsContext gc) {
         for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i++) {
             for (int j = 0; j < GAME_BOARD_SIZE_MEDIUM; j++) {
                 if ((i + j) % 2 == 0) {
@@ -364,7 +367,7 @@ public class GameBoard {
     }
 
     /**
-     * Here happens everything that needs a refresh.
+     * Here everything happens that needs a refresh.
      * For example the movement of the snake or collision detection.
      * <p>
      * The method is automatically called by a timer after n milliseconds.
@@ -388,12 +391,16 @@ public class GameBoard {
                 snake.checkForCollisions(innerWall);
                 if (snake.isAlive()) {
                     // If the snake ate the food with the last "movement" a new food element gets created.
-                    if (null == regularFood) regularFood = new Food(snake, innerWall, null, false);
+                    if (null == regularFood) {
+                            regularFood = new Food(snake, innerWall, null, false, previousRegularFoodType);
+                            previousRegularFoodType = regularFood.getFoodType();
+                        }
                     if (foodsToEatUntilNextSpecialFood == foodsEatenSinceLastSpecialFood && specialFood == null){
-                        specialFood = new Food(snake, innerWall, regularFood, true);
+                            specialFood = new Food(snake, innerWall, regularFood, true, previousSpecialFoodType);
+                            previousSpecialFoodType = specialFood.getFoodType();
                     }
                     gc.clearRect(0, 0, gameBoardCanvas.getWidth(), gameBoardCanvas.getHeight());
-                    drawGameboard(gc);
+                    drawGameBoard(gc);
                     drawWalls(gc);
                     drawSnake(gc);
 
@@ -418,7 +425,7 @@ public class GameBoard {
                             snake.eats();
                             score += specialFood.getScoreValue();
                             foodsEatenSinceLastSpecialFood=0;
-                            foodsToEatUntilNextSpecialFood=(int)(4 + (Math.random() * 2));
+                            foodsToEatUntilNextSpecialFood=(int)(3 + (Math.random() * 4));
                             StateManager.getScoreBoard().drawScoreBoard(this.getScore());
                             specialFood = null;
                         } else {
@@ -426,7 +433,7 @@ public class GameBoard {
                             if(specialFood.getSpecialFoodTimeToLive()==0){
                                 specialFood = null;
                                 foodsEatenSinceLastSpecialFood=0;
-                                foodsToEatUntilNextSpecialFood=(int)(4 + (Math.random() * 2));
+                                foodsToEatUntilNextSpecialFood=(int)(3 + (Math.random() * 4));
                             }
                             else drawFood(gc, specialFood);
                         }

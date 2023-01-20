@@ -2,11 +2,13 @@ package at.ac.fhcampuswien.snake.ingameobjects;
 
 import at.ac.fhcampuswien.snake.util.Constants;
 
+import java.util.Objects;
+
 public class Food {
 
     private final Position position;
 
-    private final String foodType;
+    private String foodType;
 
     public int getScoreValue() {
         return scoreValue;
@@ -25,7 +27,7 @@ public class Food {
             "Strawberry.png", "Watermelon.png"};
 
    private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Mathias.png", "Sorin.png",
-            "Lukas.png", "Arik.png"/*, "Benjamin.png", "Aleksandar.png"*/};
+            "Lukas.png", "Arik.png", "Benjamin.png", "Aleksandar.png"};
 
     //private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Sorin.png"};
 
@@ -35,20 +37,24 @@ public class Food {
      * It checks for collisions with the SNAKE Object.
      * By random there will also be a FoodType assigned.
      */
-    public Food(Snake snake, Wall wall, Food currentlyExistingRegularFood, boolean isSpecialFood) {
+    public Food(Snake snake, Wall wall, Food currentlyExistingRegularFood, boolean isSpecialFood, String previousFoodType) {
         if(isSpecialFood){
             //TODO: multiply by difficulty level
             this.scoreValue=SPECIAL_SCORE_VALUE;
             // range: 18 - 36
             this.specialFoodTimeToLive = (int) (18 + (Math.random() * 18));
-            int foodTypeNumber = (int) (Math.random() * SPECIAL_FOOD_TYPES.length);
-            foodType = SPECIAL_FOOD_TYPES[foodTypeNumber];
+            do {
+                int foodTypeNumber = (int) (Math.random() * SPECIAL_FOOD_TYPES.length);
+                this.foodType = SPECIAL_FOOD_TYPES[foodTypeNumber];
+            } while (Objects.equals(foodType, previousFoodType));
         } else {
             //TODO: multiply by difficulty level
             this.scoreValue=REGULAR_SCORE_VALUE;
             this.specialFoodTimeToLive = -1;
-            int foodTypeNumber = (int) (Math.random() * REGULAR_FOOD_TYPES.length);
-            foodType = REGULAR_FOOD_TYPES[foodTypeNumber];
+            do {
+                int foodTypeNumber = (int) (Math.random() * REGULAR_FOOD_TYPES.length);
+                foodType = REGULAR_FOOD_TYPES[foodTypeNumber];
+            } while (Objects.equals(foodType, previousFoodType));
         }
         boolean isTargetFieldFree;
         int foodXCoord;
