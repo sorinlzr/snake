@@ -1,38 +1,28 @@
 package at.ac.fhcampuswien.snake.controller;
 
-import at.ac.fhcampuswien.snake.SnakeApp;
+import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class GameOverController {
-    private Stage stage;
-    private Scene scene;
+
     @FXML
-    public Text scoreTextField;
+    private Text scoreTextField;
 
-    // TODO - Call this method, when the Gameboard Detects, that the Game is over!
-    public void gameOverScreen(Stage stage, int score) throws IOException {
-        this.stage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(SnakeApp.class.getResource("gameover-view.fxml"));
-        scene = new Scene(fxmlLoader.load());
-        scoreTextField.setText(String.valueOf(score));
 
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+    public void playNewGame(ActionEvent actionEvent) throws IOException {
+        StateManager.switchToGameView();
     }
 
-    public void playNewGame(ActionEvent actionEvent) {
-        // TODO Implement the Gameboard Class to start another Game.
+    public void goToMainMenu(ActionEvent actionEvent) throws IOException {
+        StateManager.switchToStartView();
     }
 
-    public void goToSettings(ActionEvent actionEvent) {
-        // TODO Check if there will be a Settings Menu in the Final Version
+
+    public void setScoreTextField(String score) {
+        this.scoreTextField.setText(score);
     }
 }
