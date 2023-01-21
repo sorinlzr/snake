@@ -78,15 +78,13 @@ public class StateManager {
         gameBoard = new GameBoard(gameBoardCanvas);
         gameBoard.startGame();
 
-        stage.setOnCloseRequest(event -> {
-            gameBoard.stopGame();
-        });
+        stage.setOnCloseRequest(event -> gameBoard.stopAnimation());
     }
 
 
     private static void stopGameIfRunning() {
         if (gameBoard != null) {
-            gameBoard.stopGame();
+            gameBoard.stopAnimation();
         }
     }
 }
