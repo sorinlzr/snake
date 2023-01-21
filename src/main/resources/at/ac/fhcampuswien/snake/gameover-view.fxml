@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.14-internal"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.snake.controller.GameOverController">
+
+    <GridPane alignment="CENTER" hgap="10">
+        <padding>
+            <Insets bottom="100"/>
+        </padding>
+    </GridPane>
+
+    <GridPane alignment="CENTER" hgap="10">
+        <padding>
+            <Insets bottom="20"/>
+        </padding>
+
+        <Text fill="#911e9e" text="Game Over" textAlignment="CENTER" GridPane.rowIndex="0"
+              GridPane.columnIndex="0" GridPane.columnSpan="2">
+            <font>
+                <Font size="31.0"/>
+            </font>
+            <VBox.margin>
+                <Insets left="230.0" top="100.0"/>
+            </VBox.margin>
+        </Text>
+    </GridPane>
+
+
+    <GridPane alignment="CENTER" hgap="10">
+        <padding>
+            <Insets bottom="20"/>
+        </padding>
+
+        <Text fill="#911e9e" text="Score :" textAlignment="CENTER"
+              GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
+            <font>
+                <Font size="22.0"/>
+            </font>
+        </Text>
+        <Text fx:id="scoreTextField" fill="#911e9e" text="InsertScore" textAlignment="CENTER"
+              GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="2">
+            <font>
+                <Font size="22.0"/>
+            </font>
+        </Text>
+    </GridPane>
+
+    <GridPane alignment="CENTER" hgap="10">
+        <padding>
+            <Insets bottom="2"/>
+        </padding>
+        <Button text="New Game" onAction="#playNewGame"
+                GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+        <Button text="Main Menu" onAction="#goToMainMenu"
+                GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
+    </GridPane>
+
+</VBox>

@@ -406,8 +406,10 @@ public class GameBoard {
                         food = null;
                     } else drawFood(gc); //drawFood(gc);
 
+                } else{
+                    this.stopGame();
+                    StateManager.switchToGameOverView();
                 }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
