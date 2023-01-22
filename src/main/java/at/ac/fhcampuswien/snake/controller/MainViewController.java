@@ -1,10 +1,12 @@
 package at.ac.fhcampuswien.snake.controller;
 
+import at.ac.fhcampuswien.snake.util.Constants;
 import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,6 +30,9 @@ public class MainViewController {
 
     @FXML
     private VBox body;
+
+    @FXML
+    private ComboBox comboBox;
 
     @FXML
     private VBox footer;
@@ -54,6 +59,12 @@ public class MainViewController {
      */
     @FXML
     public void startGame() throws IOException {
+        String difficulty = comboBox.getValue().toString();
+        switch (difficulty) {
+            case "Easy" -> StateManager.difficulty = Constants.Difficulty.EASY;
+            case "Medium" -> StateManager.difficulty = Constants.Difficulty.MEDIUM;
+            case "Hard" -> StateManager.difficulty = Constants.Difficulty.HARD;
+        }
         StateManager.switchToGameView();
     }
 
