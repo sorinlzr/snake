@@ -40,6 +40,8 @@ public class GameBoard {
      */
     private final Canvas gameBoardCanvas;
 
+    private int refreshTime = 200;
+
     /**
      * The class used for animations in the game
      */
@@ -79,6 +81,13 @@ public class GameBoard {
         this.score = score;
     }
 
+    public int getRefreshTime() {
+        return refreshTime;
+    }
+    public void setRefreshTime(int refreshTime) {
+        this.refreshTime = refreshTime;
+    }
+
     /**
      * Image containing the snake's head
      */
@@ -104,9 +113,8 @@ public class GameBoard {
         this.snakeHead = new Image("graphics/snake/head.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> refreshGameBoard()));
+        timeline = new Timeline(new KeyFrame(Duration.millis(refreshTime), e -> refreshGameBoard()));
         timeline.setCycleCount(Animation.INDEFINITE);
-
     }
 
     /**
@@ -162,7 +170,6 @@ public class GameBoard {
         innerWall = generateRandomWall();
         food = new Food(snake, innerWall);
 
-        drawGameBoard(gc);
         drawWalls(gc);
         drawSnake(gc);
         drawFood(gc);

@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.text.Text?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox fx:controller="at.ac.fhcampuswien.snake.controller.MainViewController"
       xmlns:fx="http://javafx.com/fxml" fx:id="body">
     <VBox>
@@ -28,6 +30,19 @@
         <padding>
             <Insets bottom="2"/>
         </padding>
+        <Text styleClass="textDark" GridPane.rowIndex="2" GridPane.columnIndex="0">Select difficulty:&#160;</Text>
+        <ComboBox fx:id="comboBox" id="comboId" GridPane.rowIndex="2" GridPane.columnIndex="3">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Easy" />
+                    <String fx:value="Medium" />
+                    <String fx:value="Hard" />
+                </FXCollections>
+            </items>
+            <value>
+                <String fx:value="Easy" />
+            </value>
+        </ComboBox>
         <Button text="Start Game!" onAction="#startGame"
                 GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
         <Button text="Exit" onAction="#onExitButtonClick"

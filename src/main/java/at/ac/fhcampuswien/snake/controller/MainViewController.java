@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,6 +29,9 @@ public class MainViewController {
 
     @FXML
     private VBox body;
+
+    @FXML
+    private ComboBox comboBox;
 
     @FXML
     private VBox footer;
@@ -54,6 +58,12 @@ public class MainViewController {
      */
     @FXML
     public void startGame() throws IOException {
+        String difficulty = comboBox.getValue().toString();
+        switch (difficulty) {
+            case "Easy" -> StateManager.setRefreshTime(300);
+            case "Medium" -> StateManager.setRefreshTime(200);
+            case "Hard" -> StateManager.setRefreshTime(150);
+        }
         StateManager.switchToGameView();
     }
 
