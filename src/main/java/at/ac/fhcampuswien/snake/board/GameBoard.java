@@ -40,7 +40,7 @@ public class GameBoard {
      */
     private final Canvas gameBoardCanvas;
 
-    private int refreshTime = 200;
+    private int refreshTime;
 
     /**
      * The class used for animations in the game
@@ -81,13 +81,6 @@ public class GameBoard {
         this.score = score;
     }
 
-    public int getRefreshTime() {
-        return refreshTime;
-    }
-    public void setRefreshTime(int refreshTime) {
-        this.refreshTime = refreshTime;
-    }
-
     /**
      * Image containing the snake's head
      */
@@ -104,11 +97,12 @@ public class GameBoard {
      *
      * @param gameBoardCanvas Canvas to draw on
      */
-    public GameBoard(Canvas gameBoardCanvas) {
+    public GameBoard(Canvas gameBoardCanvas, int refreshTime) {
         this.gameBoardCanvas = gameBoardCanvas;
         this.gameBoardCanvas.requestFocus();
         this.gc = gameBoardCanvas.getGraphicsContext2D();
         this.score = 0;
+        this.refreshTime = refreshTime;
 
         this.snakeHead = new Image("graphics/snake/head.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
