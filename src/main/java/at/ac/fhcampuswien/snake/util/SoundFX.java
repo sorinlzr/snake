@@ -20,7 +20,6 @@ public class SoundFX {
         playSoundFx(EATING_SOUND);
     }
 
-    // TODO play this when the bonus point is eaten
     public static void playBonusPointSound() {
         playSoundFx(BONUS_POINT_SOUND);
     }
