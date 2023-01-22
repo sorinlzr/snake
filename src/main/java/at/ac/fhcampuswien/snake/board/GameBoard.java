@@ -40,8 +40,6 @@ public class GameBoard {
      */
     private final Canvas gameBoardCanvas;
 
-    private int refreshTime;
-
     /**
      * The class used for animations in the game
      */
@@ -97,17 +95,16 @@ public class GameBoard {
      *
      * @param gameBoardCanvas Canvas to draw on
      */
-    public GameBoard(Canvas gameBoardCanvas, int refreshTime) {
+    public GameBoard(Canvas gameBoardCanvas, Difficulty difficulty) {
         this.gameBoardCanvas = gameBoardCanvas;
         this.gameBoardCanvas.requestFocus();
         this.gc = gameBoardCanvas.getGraphicsContext2D();
         this.score = 0;
-        this.refreshTime = refreshTime;
 
         this.snakeHead = new Image("graphics/snake/head.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(refreshTime), e -> refreshGameBoard()));
+        timeline = new Timeline(new KeyFrame(Duration.millis(difficulty.getRefreshTime()), e -> refreshGameBoard()));
         timeline.setCycleCount(Animation.INDEFINITE);
     }
 
@@ -164,6 +161,7 @@ public class GameBoard {
         innerWall = generateRandomWall();
         food = new Food(snake, innerWall);
 
+        drawGameBoard(gc);
         drawWalls(gc);
         drawSnake(gc);
         drawFood(gc);

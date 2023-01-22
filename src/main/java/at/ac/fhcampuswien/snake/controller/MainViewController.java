@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.snake.controller;
 
+import at.ac.fhcampuswien.snake.util.Constants;
 import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -60,9 +61,9 @@ public class MainViewController {
     public void startGame() throws IOException {
         String difficulty = comboBox.getValue().toString();
         switch (difficulty) {
-            case "Easy" -> StateManager.refreshTime = 300;
-            case "Medium" -> StateManager.refreshTime = 200;
-            case "Hard" -> StateManager.refreshTime = 150;
+            case "Easy" -> StateManager.difficulty = Constants.Difficulty.EASY;
+            case "Medium" -> StateManager.difficulty = Constants.Difficulty.MEDIUM;
+            case "Hard" -> StateManager.difficulty = Constants.Difficulty.HARD;
         }
         StateManager.switchToGameView();
     }
