@@ -102,7 +102,7 @@ public class GameBoard {
      *
      * @param gameBoardCanvas Canvas to draw on
      */
-    public GameBoard(Canvas gameBoardCanvas) {
+    public GameBoard(Canvas gameBoardCanvas, Difficulty difficulty) {
         this.gameBoardCanvas = gameBoardCanvas;
         this.gameBoardCanvas.requestFocus();
         this.gc = gameBoardCanvas.getGraphicsContext2D();
@@ -111,9 +111,8 @@ public class GameBoard {
         this.snakeHead = new Image("graphics/snake/head.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> refreshGameBoard()));
+        timeline = new Timeline(new KeyFrame(Duration.millis(difficulty.getRefreshTime()), e -> refreshGameBoard()));
         timeline.setCycleCount(Animation.INDEFINITE);
-
     }
 
     /**
