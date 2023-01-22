@@ -10,6 +10,8 @@ public class Food {
 
     private String foodType;
 
+    private boolean isSpecialFood;
+
     public int getScoreValue() {
         return scoreValue;
     }
@@ -26,7 +28,7 @@ public class Food {
             "Grape.png", "Lemon.png", "Orange.png", "Peach.png", "Pear.png", "Pineapple.png", "Plum.png",
             "Strawberry.png", "Watermelon.png"};
 
-   private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Mathias.png", "Sorin.png",
+    private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Mathias.png", "Sorin.png",
             "Lukas.png", "Arik.png", "Benjamin.png", "Aleksandar.png"};
 
     //private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Sorin.png"};
@@ -37,10 +39,12 @@ public class Food {
      * It checks for collisions with the SNAKE Object.
      * By random there will also be a FoodType assigned.
      */
-    public Food(Snake snake, Wall wall, Food currentlyExistingRegularFood, boolean isSpecialFood, String previousFoodType) {
-        if(isSpecialFood){
+    public Food(Snake snake, Wall wall, Food currentlyExistingRegularFood,
+                boolean isSpecialFood, String previousFoodType) {
+        if (isSpecialFood) {
+            this.isSpecialFood = true;
             //TODO: multiply by difficulty level
-            this.scoreValue=SPECIAL_SCORE_VALUE;
+            this.scoreValue = SPECIAL_SCORE_VALUE;
             // range: 18 - 36
             this.specialFoodTimeToLive = (int) (18 + (Math.random() * 18));
             do {
@@ -49,7 +53,7 @@ public class Food {
             } while (Objects.equals(foodType, previousFoodType));
         } else {
             //TODO: multiply by difficulty level
-            this.scoreValue=REGULAR_SCORE_VALUE;
+            this.scoreValue = REGULAR_SCORE_VALUE;
             this.specialFoodTimeToLive = -1;
             do {
                 int foodTypeNumber = (int) (Math.random() * REGULAR_FOOD_TYPES.length);
@@ -93,7 +97,7 @@ public class Food {
             }
 
             // Check if currently existing regular Food is on desired Position
-            if(isSpecialFood && currentlyExistingRegularFood != null && isTargetFieldFree){
+            if (isSpecialFood && currentlyExistingRegularFood != null && isTargetFieldFree) {
                 if (currentlyExistingRegularFood.position.getX() == foodXCoord &&
                         currentlyExistingRegularFood.position.getY() == foodYCoord) isTargetFieldFree = false;
             }
@@ -111,11 +115,15 @@ public class Food {
         return foodType;
     }
 
-    public int getSpecialFoodTimeToLive(){
+    public boolean isSpecialFood() {
+        return isSpecialFood;
+    }
+
+    public int getSpecialFoodTimeToLive() {
         return specialFoodTimeToLive;
     }
 
-    public void decreaseSpecialFoodTimeToLive(){
+    public void decreaseSpecialFoodTimeToLive() {
         specialFoodTimeToLive--;
     }
 }

@@ -169,8 +169,8 @@ public class GameBoard {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
         innerWall = generateRandomWall();
         regularFood = new Food(snake, innerWall, null, false, previousRegularFoodType);
-        // range 4 - 10
-        foodsToEatUntilNextSpecialFood=(int) (3 + (Math.random() * 10));
+        // range 5 - 10
+        foodsToEatUntilNextSpecialFood=(int) (5 + (Math.random() * 6));
         drawGameBoard(gc);
         drawWalls(gc);
         drawSnake(gc);
@@ -443,7 +443,7 @@ public class GameBoard {
                            Which would mean, that the food is never shown, but the snake would appear to get longer for no reason.
                  */
                     if (checkIfSnakeHeadIsOnFood(regularFood)) {
-                        snake.eats();
+                        snake.eats(regularFood);
                         score += regularFood.getScoreValue();
                         foodsEatenSinceLastSpecialFood++;
                         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
@@ -451,18 +451,14 @@ public class GameBoard {
                     } else drawFood(gc, regularFood);
                     if (specialFood!=null) {
                         if (checkIfSnakeHeadIsOnFood(specialFood)) {
-                            snake.eats();
+                            snake.eats(specialFood);
                             score += specialFood.getScoreValue();
-                            foodsEatenSinceLastSpecialFood=0;
-                            foodsToEatUntilNextSpecialFood=(int)(3 + (Math.random() * 4));
                             StateManager.getScoreBoard().drawScoreBoard(this.getScore());
-                            specialFood = null;
+                            resetSpecialFoodConditions();
                         } else {
                             specialFood.decreaseSpecialFoodTimeToLive();
                             if(specialFood.getSpecialFoodTimeToLive()==0){
-                                specialFood = null;
-                                foodsEatenSinceLastSpecialFood=0;
-                                foodsToEatUntilNextSpecialFood=(int)(3 + (Math.random() * 4));
+                                resetSpecialFoodConditions();
                             }
                             else drawFood(gc, specialFood);
                         }
@@ -475,4 +471,11 @@ public class GameBoard {
             }
         });
     }
+
+    private void resetSpecialFoodConditions(){
+        specialFood = null;
+        foodsEatenSinceLastSpecialFood=0;
+        foodsToEatUntilNextSpecialFood=(int)(3 + (Math.random() * 4));
+    }
+
 }
