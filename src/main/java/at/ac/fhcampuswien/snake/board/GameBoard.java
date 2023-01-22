@@ -4,7 +4,12 @@ import at.ac.fhcampuswien.snake.ingameobjects.Food;
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
 import at.ac.fhcampuswien.snake.ingameobjects.Snake;
 import at.ac.fhcampuswien.snake.ingameobjects.Wall;
+import at.ac.fhcampuswien.snake.util.SoundFX;
 import at.ac.fhcampuswien.snake.util.StateManager;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -15,6 +20,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,21 +32,23 @@ import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 public class GameBoard {
 
-    private GraphicsContext gc;
+    private final static Logger LOG = LoggerFactory.getLogger(GameBoard.class);
+
+    private final GraphicsContext gc;
     /**
      * The canvas that is used to display the game board.
      */
     private final Canvas gameBoardCanvas;
 
     /**
-     * A task which is executed by {@link #refreshGameBoardTimer}.
+     * The class used for animations in the game
      */
-    private final TimerTask refreshGameBoardTimerTask;
+    private final Timeline timeline;
 
     /**
-     * The timer which executes a {@link #refreshGameBoardTimerTask} every n milliseconds.
+     * This pause will be used when the snake dies and the soundFX is playing
      */
-    private final Timer refreshGameBoardTimer;
+    private final PauseTransition pause = new PauseTransition(Duration.seconds(3));
 
     /**
      * Indicates whether the game is paused or not.
@@ -94,36 +104,54 @@ public class GameBoard {
         this.snakeHead = new Image("graphics/snake/head.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
 
-        refreshGameBoardTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                refreshGameBoard();
-            }
-        };
+        timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> refreshGameBoard()));
+        timeline.setCycleCount(Animation.INDEFINITE);
 
-        refreshGameBoardTimer = new Timer();
     }
 
     /**
      * Starts a new game and a timer to refresh the game board.
      * <p>
-     * It is important to call the {@link #stopGame()} method when the game is over,
+     * It is important to call the {@link #stopAnimation()} method when the game is over,
      * so that the timer does not continue to run in the background.
      */
     public void startGame() {
+        pause.setOnFinished(e -> timeline.play());
+        SoundFX.playIntroSound();
+
         initializeBoardObjects();
         initializeEvents();
         gameBoardCanvas.requestFocus();
         this.score=0;
+        StateManager.getScoreBoard().drawCountdownTimer();
         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
-        refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 200);
+
+        timeline.pause();
+        pause.play();
     }
 
     /**
      * Stops the timer which refreshes the game board.
      */
-    public void stopGame() {
-        refreshGameBoardTimer.cancel();
+    public void stopAnimation() {
+        timeline.stop();
+    }
+
+    public void endCurrentGame() {
+        pause.setOnFinished(e -> {
+            try {
+                timeline.play();
+                StateManager.switchToGameOverView();
+            } catch (IOException ex) {
+                LOG.error("Error switching to the GameOver view");
+                ex.printStackTrace();
+            }
+        });
+
+        SoundFX.playGameOverSound();
+
+        this.stopAnimation();
+        pause.play();
     }
 
     /**
@@ -134,9 +162,10 @@ public class GameBoard {
         innerWall = generateRandomWall();
         food = new Food(snake, innerWall);
 
-        drawGameboard(gc);
+        drawGameBoard(gc);
         drawWalls(gc);
         drawSnake(gc);
+        drawFood(gc);
     }
 
     /**
@@ -199,7 +228,7 @@ public class GameBoard {
      *
      * @param gc GraphicsContext gc used for all BoardObjects
      */
-    private void drawGameboard(GraphicsContext gc) {
+    private void drawGameBoard(GraphicsContext gc) {
         for (int i = 0; i < GAME_BOARD_SIZE_MEDIUM; i++) {
             for (int j = 0; j < GAME_BOARD_SIZE_MEDIUM; j++) {
                 if ((i + j) % 2 == 0) {
@@ -342,7 +371,7 @@ public class GameBoard {
                     alert.showAndWait();
 
                     if (alert.getResult() == ButtonType.YES) {
-                        this.stopGame();
+                        this.stopAnimation();
 
                         try {
                             StateManager.switchToStartView();
@@ -386,7 +415,7 @@ public class GameBoard {
                     if (null == food) food = new Food(snake, innerWall);
 
                     gc.clearRect(0, 0, gameBoardCanvas.getWidth(), gameBoardCanvas.getHeight());
-                    drawGameboard(gc);
+                    drawGameBoard(gc);
                     drawWalls(gc);
                     drawSnake(gc);
 
@@ -404,11 +433,10 @@ public class GameBoard {
                         score += 1;
                         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
                         food = null;
-                    } else drawFood(gc); //drawFood(gc);
+                    } else drawFood(gc);
 
-                } else{
-                    this.stopGame();
-                    StateManager.switchToGameOverView();
+                } else {
+                    endCurrentGame();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
