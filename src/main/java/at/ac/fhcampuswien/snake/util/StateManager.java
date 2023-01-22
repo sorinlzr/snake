@@ -1,8 +1,9 @@
 package at.ac.fhcampuswien.snake.util;
 
-import at.ac.fhcampuswien.snake.board.GameBoard;
-import at.ac.fhcampuswien.snake.board.ScoreBoard;
 import at.ac.fhcampuswien.snake.SnakeApp;
+import at.ac.fhcampuswien.snake.board.GameBoard;
+import at.ac.fhcampuswien.snake.board.HighscoreBoard;
+import at.ac.fhcampuswien.snake.board.ScoreBoard;
 import at.ac.fhcampuswien.snake.controller.GameOverController;
 import at.ac.fhcampuswien.snake.controller.GameViewController;
 import at.ac.fhcampuswien.snake.controller.MainViewController;
@@ -10,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,6 +29,8 @@ public class StateManager {
     private static GameBoard gameBoard;
 
     private static ScoreBoard scoreBoard;
+
+    private static HighscoreBoard highscoreBoard;
 
     public static ScoreBoard getScoreBoard() {
         return scoreBoard;
@@ -64,6 +68,9 @@ public class StateManager {
         GameOverController gameOverController = gameOverViewFxmlLoader.getController();
         gameOverController.setScoreTextField(String.valueOf(gameBoard.getScore()));
 
+        VBox highScoreVBox = gameOverController.getHighScoreTable();
+        highscoreBoard = new HighscoreBoard(highScoreVBox);
+
         stage.setScene(gameOverScreen);
         stage.show();
     }
@@ -82,7 +89,6 @@ public class StateManager {
 
         stage.setOnCloseRequest(event -> gameBoard.stopAnimation());
     }
-
 
     private static void stopGameIfRunning() {
         if (gameBoard != null) {

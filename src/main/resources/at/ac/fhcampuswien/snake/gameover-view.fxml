@@ -60,4 +60,16 @@
                 GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
     </GridPane>
 
+    <VBox style="-fx-alignment: center">
+        <padding>
+            <Insets left="10" top="50"/>
+        </padding>
+        <Text fill="#911e9e" text="Highscores"
+              style="-fx-font-size: 20;">
+        </Text>
+    </VBox>
+
+    <VBox fx:id="highScoreTable">
+    </VBox>
+
 </VBox>

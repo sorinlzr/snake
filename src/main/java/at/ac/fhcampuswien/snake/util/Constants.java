@@ -3,11 +3,17 @@ package at.ac.fhcampuswien.snake.util;
 public class Constants {
 
     public static final String TITLE = "Snake";
+    public static final String HIGHSCORE_SEPARATOR = "%%%";
 
     public static final int GAME_BOARD_SIZE_MEDIUM = 500;
 
     public static final int SCOREBOARD_HEIGHT = GAME_BOARD_SIZE_MEDIUM/15;
     public static final int SCOREBOARD_WIDTH = GAME_BOARD_SIZE_MEDIUM;
+
+    public static final int HIGHSCORE_BOARD_HEIGHT = 170;
+    public static final int HIGHSCORE_BOARD_WIDTH = GAME_BOARD_SIZE_MEDIUM;
+    public static final int HIGHSCORE_BOARD_NAME_COL_WIDTH = HIGHSCORE_BOARD_WIDTH - 125;
+    public static final int HIGHSCORE_BOARD_SCORE_COL_WIDTH = 100;
 
     public static final int APP_HEIGHT_MEDIUM = GAME_BOARD_SIZE_MEDIUM + SCOREBOARD_HEIGHT + 25; // + 25 for menu bar
     public static final int APP_WIDTH_MEDIUM = GAME_BOARD_SIZE_MEDIUM;

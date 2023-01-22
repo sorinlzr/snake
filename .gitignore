@@ -4,6 +4,8 @@ target/
 !**/src/test/**/target/
 .gradle/
 
+/src/main/resources/highscores.txt
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml

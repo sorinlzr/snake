@@ -4,6 +4,8 @@ import at.ac.fhcampuswien.snake.ingameobjects.Food;
 import at.ac.fhcampuswien.snake.ingameobjects.Position;
 import at.ac.fhcampuswien.snake.ingameobjects.Snake;
 import at.ac.fhcampuswien.snake.ingameobjects.Wall;
+import at.ac.fhcampuswien.snake.service.HighscoreService;
+import at.ac.fhcampuswien.snake.util.Player;
 import at.ac.fhcampuswien.snake.util.SoundFX;
 import at.ac.fhcampuswien.snake.util.StateManager;
 import javafx.animation.Animation;
@@ -16,6 +18,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -163,6 +166,7 @@ public class GameBoard {
         SoundFX.playGameOverSound();
 
         this.stopAnimation();
+        if(score != 0) promptUserForInput();
         pause.play();
     }
 
@@ -399,6 +403,26 @@ public class GameBoard {
                 }
             }
         });
+    }
+
+    /**
+     * This method prompts the user to input their name at the end of the game.
+     * This allows to keep track of recent high scores.
+     */
+    private void promptUserForInput() {
+        String name = "";
+
+        TextInputDialog inputPlayerName = new TextInputDialog();
+        inputPlayerName.setHeaderText("Please enter your name:");
+        inputPlayerName.setContentText("Name: ");
+
+        Optional<String> result = inputPlayerName.showAndWait();
+        if (result.isPresent()) {
+            name = result.get().replace("%","");
+        }
+
+        Player player = new Player(name, score);
+        HighscoreService.savePlayerHighscore(player);
     }
 
     /**
