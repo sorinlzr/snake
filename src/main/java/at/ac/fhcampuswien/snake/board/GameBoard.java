@@ -30,6 +30,8 @@ public class GameBoard {
      */
     private final Canvas gameBoardCanvas;
 
+    private int refreshTime = 200;
+
     /**
      * A task which is executed by {@link #refreshGameBoardTimer}.
      */
@@ -67,6 +69,13 @@ public class GameBoard {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getRefreshTime() {
+        return refreshTime;
+    }
+    public void setRefreshTime(int refreshTime) {
+        this.refreshTime = refreshTime;
     }
 
     /**
@@ -116,7 +125,7 @@ public class GameBoard {
         gameBoardCanvas.requestFocus();
         this.score=0;
         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
-        refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, 200);
+        refreshGameBoardTimer.scheduleAtFixedRate(refreshGameBoardTimerTask, 0, refreshTime);
     }
 
     /**

@@ -89,4 +89,9 @@ public class StateManager {
             gameBoard.stopGame();
         }
     }
+    public static void setRefreshTime(int refreshTime) {
+        if (gameBoard != null) {
+            gameBoard.setRefreshTime(refreshTime);
+        }
+    }
 }
