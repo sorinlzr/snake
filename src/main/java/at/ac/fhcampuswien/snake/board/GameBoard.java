@@ -123,15 +123,19 @@ public class GameBoard {
      */
     public void startGame() {
         pause.setOnFinished(e -> timeline.play());
-        SoundFX.playIntroSound();
 
         initializeBoardObjects();
         initializeEvents();
+
         gameBoardCanvas.requestFocus();
         this.score=0;
+
         this.foodsEatenSinceLastSpecialFood=0;
+
         StateManager.getScoreBoard().drawCountdownTimer();
         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
+
+        SoundFX.playIntroSound();
 
         timeline.pause();
         pause.play();
