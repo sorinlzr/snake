@@ -162,6 +162,7 @@ public class GameBoard {
         SoundFX.playGameOverSound();
 
         this.stopAnimation();
+        if(score != 0) promptUserForInput();
         pause.play();
     }
 
@@ -487,7 +488,6 @@ public class GameBoard {
                         }
                     }
                 } else {
-                    if(score != 0) promptUserForInput();
                     endCurrentGame();
                 }
             } catch (Exception ex) {
