@@ -1,12 +1,11 @@
 package at.ac.fhcampuswien.snake.util;
 
+import at.ac.fhcampuswien.snake.SnakeApp;
 import at.ac.fhcampuswien.snake.board.GameBoard;
 import at.ac.fhcampuswien.snake.board.HighscoreBoard;
 import at.ac.fhcampuswien.snake.board.ScoreBoard;
-import at.ac.fhcampuswien.snake.SnakeApp;
 import at.ac.fhcampuswien.snake.controller.GameOverController;
 import at.ac.fhcampuswien.snake.controller.GameViewController;
-import at.ac.fhcampuswien.snake.controller.HighscoreController;
 import at.ac.fhcampuswien.snake.controller.MainViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -67,6 +66,9 @@ public class StateManager {
         GameOverController gameOverController = gameOverViewFxmlLoader.getController();
         gameOverController.setScoreTextField(String.valueOf(gameBoard.getScore()));
 
+        VBox highScoreVBox = gameOverController.getHighScoreTable();
+        highscoreBoard = new HighscoreBoard(highScoreVBox);
+
         stage.setScene(gameOverScreen);
         stage.show();
     }
@@ -86,23 +88,6 @@ public class StateManager {
         stage.setOnCloseRequest(event -> {
             gameBoard.stopGame();
         });
-    }
-
-    public static void showHighscoreBoard() throws IOException {
-        FXMLLoader highscoreBoardFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("highscore-view.fxml"));
-        Scene gameScene = new Scene(highscoreBoardFxmlLoader.load(), APP_WIDTH_MEDIUM, APP_HEIGHT_MEDIUM);
-        HighscoreController highscoreController = highscoreBoardFxmlLoader.getController();
-        highscoreController.setStage(stage);
-
-        VBox highScoreVBox = highscoreController.getHighScoreTable();
-        highscoreBoard = new HighscoreBoard(highScoreVBox);
-
-
-        ImageView logo = highscoreController.getLogo();
-        logo.fitWidthProperty().bind(stage.widthProperty());
-
-        stage.setScene(gameScene);
-        stage.setOnCloseRequest(event -> gameBoard.stopGame());
     }
 
     private static void stopGameIfRunning() {

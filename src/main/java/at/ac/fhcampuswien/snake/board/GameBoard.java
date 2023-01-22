@@ -347,7 +347,7 @@ public class GameBoard {
                         try {
                             // TODO this was changed for now only for testing
                             // implement the display of the highscore board in a better way
-                            StateManager.showHighscoreBoard();
+                            StateManager.switchToStartView();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }

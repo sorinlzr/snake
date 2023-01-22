@@ -60,4 +60,14 @@
                 GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
     </GridPane>
 
+    <VBox>
+        <padding>
+            <Insets left="10"/>
+        </padding>
+        <Label fx:id="textBox"/>
+    </VBox>
+
+    <VBox fx:id="highScoreTable">
+    </VBox>
+
 </VBox>
