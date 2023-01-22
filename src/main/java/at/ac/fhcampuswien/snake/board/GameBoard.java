@@ -123,6 +123,7 @@ public class GameBoard {
         initializeEvents();
         gameBoardCanvas.requestFocus();
         this.score=0;
+        StateManager.getScoreBoard().drawCountdownTimer();
         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
 
         timeline.pause();
