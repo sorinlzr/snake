@@ -60,9 +60,9 @@ public class MainViewController {
     public void startGame() throws IOException {
         String difficulty = comboBox.getValue().toString();
         switch (difficulty) {
-            case "Easy" -> StateManager.setRefreshTime(300);
-            case "Medium" -> StateManager.setRefreshTime(200);
-            case "Hard" -> StateManager.setRefreshTime(150);
+            case "Easy" -> StateManager.refreshTime = 300;
+            case "Medium" -> StateManager.refreshTime = 200;
+            case "Hard" -> StateManager.refreshTime = 150;
         }
         StateManager.switchToGameView();
     }
