@@ -29,4 +29,17 @@ public class Constants {
         POINTS, CHARACTER, OBSTACLE
     }
 
+    public enum Difficulty {
+        EASY(300), MEDIUM(200), HARD(150);
+
+        private final int refreshTime;
+
+        Difficulty(int refreshTime) {
+            this.refreshTime = refreshTime;
+        }
+
+        public int getRefreshTime() {
+            return refreshTime;
+        }
+    }
 }

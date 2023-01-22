@@ -22,6 +22,8 @@ import static at.ac.fhcampuswien.snake.util.Constants.*;
 public class StateManager {
     private static Stage stage = null;
 
+    public static Difficulty difficulty = Difficulty.MEDIUM;
+
     private static GameBoard gameBoard;
 
     private static ScoreBoard scoreBoard;
@@ -75,7 +77,7 @@ public class StateManager {
         Canvas gameBoardCanvas = gameViewController.getGameBoardCanvas();
         Canvas scoreBoardCanvas = gameViewController.getScoreBoardCanvas();
         scoreBoard = new ScoreBoard(scoreBoardCanvas);
-        gameBoard = new GameBoard(gameBoardCanvas);
+        gameBoard = new GameBoard(gameBoardCanvas, difficulty);
         gameBoard.startGame();
 
         stage.setOnCloseRequest(event -> gameBoard.stopAnimation());

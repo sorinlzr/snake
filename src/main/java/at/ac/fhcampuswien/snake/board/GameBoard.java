@@ -59,7 +59,14 @@ public class GameBoard {
      * The snake, lol
      */
     private Snake snake;
-    private Food food;
+    private Food regularFood;
+    private Food specialFood;
+
+    private String previousRegularFoodType;
+    private String previousSpecialFoodType;
+
+    private int foodsEatenSinceLastSpecialFood;
+    private int foodsToEatUntilNextSpecialFood;
 
     /**
      * An inner wall that may appear random inside the game area at the start of the game, to make our lives harder
@@ -95,7 +102,7 @@ public class GameBoard {
      *
      * @param gameBoardCanvas Canvas to draw on
      */
-    public GameBoard(Canvas gameBoardCanvas) {
+    public GameBoard(Canvas gameBoardCanvas, Difficulty difficulty) {
         this.gameBoardCanvas = gameBoardCanvas;
         this.gameBoardCanvas.requestFocus();
         this.gc = gameBoardCanvas.getGraphicsContext2D();
@@ -104,9 +111,8 @@ public class GameBoard {
         this.snakeHead = new Image("graphics/snake/head.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> refreshGameBoard()));
+        timeline = new Timeline(new KeyFrame(Duration.millis(difficulty.getRefreshTime()), e -> refreshGameBoard()));
         timeline.setCycleCount(Animation.INDEFINITE);
-
     }
 
     /**
@@ -123,6 +129,8 @@ public class GameBoard {
 
         gameBoardCanvas.requestFocus();
         this.score=0;
+
+        this.foodsEatenSinceLastSpecialFood=0;
 
         StateManager.getScoreBoard().drawCountdownTimer();
         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
@@ -163,12 +171,13 @@ public class GameBoard {
     private void initializeBoardObjects() {
         snake = new Snake(INITIAL_SIZE, INITIAL_DIRECTION);
         innerWall = generateRandomWall();
-        food = new Food(snake, innerWall);
-
+        regularFood = new Food(snake, innerWall, null, false, previousRegularFoodType);
+        // range 5 - 10
+        foodsToEatUntilNextSpecialFood=(int) (5 + (Math.random() * 6));
         drawGameBoard(gc);
         drawWalls(gc);
         drawSnake(gc);
-        drawFood(gc);
+        drawFood(gc, regularFood);
     }
 
     /**
@@ -244,8 +253,8 @@ public class GameBoard {
         }
     }
 
-    private void drawFood(GraphicsContext gc) {
-        Image foodImg = new Image("graphics/fruit/" + food.getFoodType());
+    private void drawFood(GraphicsContext gc, Food food) {
+        Image foodImg = new Image("graphics/food/" + food.getFoodType());
         gc.drawImage(foodImg, food.getLocation().getX(), food.getLocation().getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
     }
 
@@ -276,7 +285,7 @@ public class GameBoard {
         }
     }
 
-    private boolean checkIfSnakeHeadIsOnFood() {
+    private boolean checkIfSnakeHeadIsOnFood(Food food) {
         return (snake.getSegments().get(0).getX() == food.getLocation().getX() &&
                 snake.getSegments().get(0).getY() == food.getLocation().getY());
     }
@@ -390,7 +399,7 @@ public class GameBoard {
     }
 
     /**
-     * Here happens everything that needs a refresh.
+     * Here everything happens that needs a refresh.
      * For example the movement of the snake or collision detection.
      * <p>
      * The method is automatically called by a timer after n milliseconds.
@@ -402,7 +411,6 @@ public class GameBoard {
         if (isGamePaused) {
             this.gc.setFill(Color.WHITE);
             this.gc.fillRect(OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.9, OBJECT_SIZE_MEDIUM * 2.7, OBJECT_SIZE_MEDIUM * 0.8);
-
             this.gc.setFont(new Font(OBJECT_SIZE_MEDIUM * 0.6));
             this.gc.setFill(Color.BLACK);
             this.gc.fillText("Paused!", OBJECT_SIZE_MEDIUM * 0.6, GAME_BOARD_SIZE_MEDIUM - OBJECT_SIZE_MEDIUM * 0.3, GAME_BOARD_SIZE_MEDIUM);
@@ -414,9 +422,15 @@ public class GameBoard {
                 snake.updateSnakePosition();
                 snake.checkForCollisions(innerWall);
                 if (snake.isAlive()) {
-                    // If the snake ate the food with the last "movement" a knew food element gets created.
-                    if (null == food) food = new Food(snake, innerWall);
-
+                    // If the snake ate the food with the last "movement" a new food element gets created.
+                    if (regularFood == null) {
+                            regularFood = new Food(snake, innerWall, null, false, previousRegularFoodType);
+                            previousRegularFoodType = regularFood.getFoodType();
+                        }
+                    if (foodsToEatUntilNextSpecialFood == foodsEatenSinceLastSpecialFood && specialFood == null){
+                            specialFood = new Food(snake, innerWall, regularFood, true, previousSpecialFoodType);
+                            previousSpecialFoodType = specialFood.getFoodType();
+                    }
                     gc.clearRect(0, 0, gameBoardCanvas.getWidth(), gameBoardCanvas.getHeight());
                     drawGameBoard(gc);
                     drawWalls(gc);
@@ -431,13 +445,27 @@ public class GameBoard {
                        would move onto next.
                            Which would mean, that the food is never shown, but the snake would appear to get longer for no reason.
                  */
-                    if (checkIfSnakeHeadIsOnFood()) {
-                        snake.eats();
-                        score += 1;
+                    if (checkIfSnakeHeadIsOnFood(regularFood)) {
+                        snake.eats(regularFood);
+                        score += regularFood.getScoreValue();
+                        foodsEatenSinceLastSpecialFood++;
                         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
-                        food = null;
-                    } else drawFood(gc);
-
+                        regularFood = null;
+                    } else drawFood(gc, regularFood);
+                    if (specialFood!=null) {
+                        if (checkIfSnakeHeadIsOnFood(specialFood)) {
+                            snake.eats(specialFood);
+                            score += specialFood.getScoreValue();
+                            StateManager.getScoreBoard().drawScoreBoard(this.getScore());
+                            resetSpecialFoodConditions();
+                        } else {
+                            specialFood.decreaseSpecialFoodTimeToLive();
+                            if(specialFood.getSpecialFoodTimeToLive()==0){
+                                resetSpecialFoodConditions();
+                            }
+                            else drawFood(gc, specialFood);
+                        }
+                    }
                 } else {
                     endCurrentGame();
                 }
@@ -446,4 +474,11 @@ public class GameBoard {
             }
         });
     }
+
+    private void resetSpecialFoodConditions(){
+        specialFood = null;
+        foodsEatenSinceLastSpecialFood=0;
+        foodsToEatUntilNextSpecialFood=(int)(3 + (Math.random() * 4));
+    }
+
 }

@@ -99,8 +99,9 @@ public class Snake {
         this.direction = newDirection;
     }
 
-    public void eats() {
-        SoundFX.playEatingSound();
+    public void eats(Food food) {
+        if (food.isSpecialFood()) SoundFX.playBonusPointSound();
+        else SoundFX.playEatingSound();
         length++;
         segments.add(new Position(-1, -1));
     }
