@@ -4,14 +4,13 @@ import at.ac.fhcampuswien.snake.util.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static at.ac.fhcampuswien.snake.util.Constants.HIGHSCORE_SEPARATOR;
 
@@ -82,6 +81,49 @@ public class HighscoreService {
         }
 
         return ret;
+    }
+
+    public static void savePlayerHighscore(Player currentPlayer) {
+
+        try {
+            File highscoreFile = getHighscoresFile();
+            List<String> fileContent = getFileContent(highscoreFile);
+            List<Player> players = getPlayerFromList(fileContent);
+
+            if (!players.isEmpty()) {
+                players.add(currentPlayer);
+
+                players = players.stream()
+                        .sorted(Comparator.comparingInt(Player::getScore).reversed())
+                        .collect(Collectors.toList());
+
+                if (players.size() > 5) {
+                    players.remove(players.size() - 1);
+                }
+            } else {
+                players.add(currentPlayer);
+            }
+
+            try (FileWriter fileWriter = new FileWriter(highscoreFile)) {
+                fileWriter.write("");
+                StringBuilder sb = new StringBuilder();
+                for (Player player : players) {
+                    sb.append(player.getName());
+                    sb.append(HIGHSCORE_SEPARATOR);
+                    sb.append(player.getScore());
+
+                    fileWriter.append(sb);
+                    fileWriter.append(System.lineSeparator());
+                    sb.setLength(0);
+                }
+            }
+
+        } catch (IOException ex) {
+            LOG.error("Error reading from file on disk");
+            ex.printStackTrace();
+        } catch (URISyntaxException ex) {
+            LOG.error("Path to the high scores file is wrong");
+        }
     }
 
 }

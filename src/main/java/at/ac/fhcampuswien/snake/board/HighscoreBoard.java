@@ -27,12 +27,14 @@ public class HighscoreBoard {
         this.highScoreBoard.setMaxHeight(200);
 
         TableColumn<Player, String> nameCol = new TableColumn<>("Name");
-        nameCol.setMinWidth(((SCOREBOARD_WIDTH - 20) * 2) / 3);
+        nameCol.setMinWidth((SCOREBOARD_WIDTH - 140));
         nameCol.setSortable(false);
+        nameCol.setReorderable(false);
 
         TableColumn<Player, String> scoreCol = new TableColumn<>("Score");
-        scoreCol.setMinWidth((SCOREBOARD_WIDTH - 25) / 3);
+        scoreCol.setMinWidth((100));
         scoreCol.setSortable(false);
+        scoreCol.setReorderable(false);
 
 
         //TODO make it prettier
@@ -41,16 +43,11 @@ public class HighscoreBoard {
         highScoreBoard.getChildren().addAll(table);
 
         Player player1 = new Player("John", 100);
-        Player player2 = new Player("Benni", 80);
-        Player player3 = new Player("Alex", 20);
+
+        HighscoreService.savePlayerHighscore(player1);
         List<Player> playerList = HighscoreService.getSavedPlayerList();
 
-        final ObservableList<Player> data = FXCollections.observableArrayList(
-                player1,
-                player2,
-                player3);
-
-        data.addAll(playerList);
+        final ObservableList<Player> data = FXCollections.observableArrayList(playerList);
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
