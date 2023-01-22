@@ -391,7 +391,7 @@ public class GameBoard {
                 snake.checkForCollisions(innerWall);
                 if (snake.isAlive()) {
                     // If the snake ate the food with the last "movement" a new food element gets created.
-                    if (null == regularFood) {
+                    if (regularFood == null) {
                             regularFood = new Food(snake, innerWall, null, false, previousRegularFoodType);
                             previousRegularFoodType = regularFood.getFoodType();
                         }

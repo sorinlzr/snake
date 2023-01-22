@@ -16,7 +16,7 @@ public class Food {
 
     private int scoreValue;
 
-    // je nach difficulty level: *1 *2 *3
+    //TODO : Multiply the Score Value with the chosen Difficulty Level: EASY : *1 | MEDIUM : *2 | HARD : *3
     private final static int REGULAR_SCORE_VALUE = 1;
     private final static int SPECIAL_SCORE_VALUE = 3;
 
