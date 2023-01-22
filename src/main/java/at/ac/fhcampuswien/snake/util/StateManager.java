@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.snake.util;
 import at.ac.fhcampuswien.snake.board.GameBoard;
 import at.ac.fhcampuswien.snake.board.ScoreBoard;
 import at.ac.fhcampuswien.snake.SnakeApp;
+import at.ac.fhcampuswien.snake.controller.GameOverController;
 import at.ac.fhcampuswien.snake.controller.GameViewController;
 import at.ac.fhcampuswien.snake.controller.MainViewController;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +54,17 @@ public class StateManager {
         stage.setScene(startScreen);
         stage.show();
     }
+    public static void switchToGameOverView() throws IOException {
+        stopGameIfRunning();
+
+        FXMLLoader gameOverViewFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("gameover-view.fxml"));
+        Scene gameOverScreen = new Scene(gameOverViewFxmlLoader.load(), APP_WIDTH_MEDIUM, APP_HEIGHT_MEDIUM);
+        GameOverController gameOverController = gameOverViewFxmlLoader.getController();
+        gameOverController.setScoreTextField(String.valueOf(gameBoard.getScore()));
+
+        stage.setScene(gameOverScreen);
+        stage.show();
+    }
 
     public static void switchToGameView() throws IOException {
         FXMLLoader gameBoardViewFxmlLoader = new FXMLLoader(SnakeApp.class.getResource("game-view.fxml"));
@@ -66,14 +78,13 @@ public class StateManager {
         gameBoard = new GameBoard(gameBoardCanvas);
         gameBoard.startGame();
 
-        stage.setOnCloseRequest(event -> {
-            gameBoard.stopGame();
-        });
+        stage.setOnCloseRequest(event -> gameBoard.stopAnimation());
     }
+
 
     private static void stopGameIfRunning() {
         if (gameBoard != null) {
-            gameBoard.stopGame();
+            gameBoard.stopAnimation();
         }
     }
 }

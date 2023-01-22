@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.snake.ingameobjects;
 
+import at.ac.fhcampuswien.snake.util.SoundFX;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +100,7 @@ public class Snake {
     }
 
     public void eats() {
+        SoundFX.playEatingSound();
         length++;
         segments.add(new Position(-1, -1));
     }
