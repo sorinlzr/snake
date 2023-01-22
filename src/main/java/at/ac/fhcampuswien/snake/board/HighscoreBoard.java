@@ -12,48 +12,39 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-import static at.ac.fhcampuswien.snake.util.Constants.SCOREBOARD_WIDTH;
+import static at.ac.fhcampuswien.snake.util.Constants.HIGHSCORE_BOARD_HEIGHT;
+import static at.ac.fhcampuswien.snake.util.Constants.HIGHSCORE_BOARD_WIDTH;
+import static at.ac.fhcampuswien.snake.util.Constants.HIGHSCORE_BOARD_NAME_COL_WIDTH;
+import static at.ac.fhcampuswien.snake.util.Constants.HIGHSCORE_BOARD_SCORE_COL_WIDTH;
 
 public class HighscoreBoard {
 
-    private final TableView<Player> table;
-
-    private final VBox highScoreBoard;
-
     public HighscoreBoard(VBox vBox) {
-        this.table = new TableView<>();
-        this.highScoreBoard = vBox;
-        this.highScoreBoard.setMaxWidth(SCOREBOARD_WIDTH);
-        this.highScoreBoard.setMaxHeight(200);
+        TableView<Player> table = new TableView<>();
+        vBox.setMaxHeight(HIGHSCORE_BOARD_HEIGHT);
+        vBox.setMaxWidth(HIGHSCORE_BOARD_WIDTH);
 
         TableColumn<Player, String> nameCol = new TableColumn<>("Name");
-        nameCol.setMinWidth((SCOREBOARD_WIDTH - 140));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setMinWidth(HIGHSCORE_BOARD_NAME_COL_WIDTH);
         nameCol.setSortable(false);
         nameCol.setReorderable(false);
 
         TableColumn<Player, String> scoreCol = new TableColumn<>("Score");
-        scoreCol.setMinWidth((100));
+        scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
+        scoreCol.setMinWidth((HIGHSCORE_BOARD_SCORE_COL_WIDTH));
         scoreCol.setSortable(false);
         scoreCol.setReorderable(false);
 
+        vBox.setSpacing(5);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        vBox.getChildren().addAll(table);
 
-        //TODO make it prettier
-        highScoreBoard.setSpacing(5);
-        highScoreBoard.setPadding(new Insets(10, 10, 10, 10));
-        highScoreBoard.getChildren().addAll(table);
-
-        Player player1 = new Player("John", 100);
-
-        HighscoreService.savePlayerHighscore(player1);
-        List<Player> playerList = HighscoreService.getSavedPlayerList();
-
+        final List<Player> playerList = HighscoreService.getSavedPlayerList();
         final ObservableList<Player> data = FXCollections.observableArrayList(playerList);
 
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
         nameCol.setStyle("-fx-alignment: CENTER;");
         scoreCol.setStyle("-fx-alignment: CENTER;");
-
 
         table.setItems(data);
         table.getColumns().addAll(nameCol, scoreCol);
