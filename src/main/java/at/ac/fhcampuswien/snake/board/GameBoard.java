@@ -122,7 +122,7 @@ public class GameBoard {
         initializeBoardObjects();
         initializeEvents();
         gameBoardCanvas.requestFocus();
-        this.score=0;
+        this.score = 0;
         StateManager.getScoreBoard().drawCountdownTimer();
         StateManager.getScoreBoard().drawScoreBoard(this.getScore());
 
@@ -365,22 +365,24 @@ public class GameBoard {
                     if (snake.isAlive()) isGamePaused = !isGamePaused;
                 }
                 case ESCAPE -> {
-                    if (snake.isAlive()) isGamePaused = true;
+                    if (snake.isAlive()) {
+                        isGamePaused = true;
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "If you return to the Start-Screen while playing the game,\nyou will lose all points.\nDo you really want to return to the Start-Screen?", ButtonType.YES, ButtonType.NO);
-                    alert.showAndWait();
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "If you return to the Start-Screen while playing the game,\nyou will lose all points.\nDo you really want to return to the Start-Screen?", ButtonType.YES, ButtonType.NO);
+                        alert.showAndWait();
 
-                    if (alert.getResult() == ButtonType.YES) {
-                        this.stopAnimation();
+                        if (alert.getResult() == ButtonType.YES) {
+                            this.stopAnimation();
 
-                        try {
-                            StateManager.switchToStartView();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            try {
+                                StateManager.switchToStartView();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-                    }
 
-                    this.isGamePaused = false;
+                        this.isGamePaused = false;
+                    }
                 }
             }
         });
