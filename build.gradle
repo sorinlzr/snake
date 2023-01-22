@@ -31,5 +31,5 @@ tasks.withType(JavaCompile) {
 
 javafx {
     version = "17"                  // JavaFX Version
-    modules = [ "javafx.controls", "javafx.fxml" ] // JavaFX modules. Add them to this array.
+    modules = [ "javafx.controls", "javafx.fxml", "javafx.media" ] // JavaFX modules. Add them to this array.
 }
