@@ -169,8 +169,17 @@ public class GameBoard {
         SoundFX.playGameOverSound();
 
         this.stopAnimation();
-        if(score != 0) promptUserForInput();
-        pause.play();
+        if(score != 0) {
+            promptUserForInput();
+            try {
+                timeline.play();
+                StateManager.switchToGameOverView();
+            } catch (IOException ex) {
+                LOG.error("Error switching to the GameOver view");
+                ex.printStackTrace();
+            }
+        }
+        else pause.play();
     }
 
     /**
