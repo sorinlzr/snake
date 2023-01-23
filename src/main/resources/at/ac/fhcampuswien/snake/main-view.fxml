@@ -47,11 +47,15 @@
     <VBox fx:id="footer">
         <TextFlow>
             <Text styleClass="textDark">Controls:&#160;</Text>
-            <Text styleClass="textDark">P</Text><Text>=Pause&#160;</Text>
-            <Text styleClass="textDark">UP</Text><Text>=Move Up&#160;</Text>
-            <Text styleClass="textDark">RIGHT</Text><Text>=Move Right&#160;</Text>
-            <Text styleClass="textDark">DOWN</Text><Text>=Move Down&#160;</Text>
-            <Text styleClass="textDark">LEFT</Text><Text>=Move Left</Text>
+        </TextFlow>
+        <TextFlow>
+            <Text styleClass="textDark">P</Text><Text>=Pause&#10;</Text>
+        </TextFlow>
+        <TextFlow>
+            <Text styleClass="textDark">ESC</Text><Text>=Return to Start Screen&#160;</Text>
+        </TextFlow>
+        <TextFlow>
+            <Text styleClass="textDark">Directional Arrows</Text><Text>=Move the Snake!&#160;</Text>
         </TextFlow>
     </VBox>
 </VBox>
