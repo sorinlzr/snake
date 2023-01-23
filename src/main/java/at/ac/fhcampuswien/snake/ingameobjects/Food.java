@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.snake.ingameobjects;
 
 import at.ac.fhcampuswien.snake.util.Constants;
+import at.ac.fhcampuswien.snake.util.StateManager;
 
 import java.util.Objects;
 
@@ -31,8 +32,6 @@ public class Food {
     private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Mathias.png", "Sorin.png",
             "Lukas.png", "Arik.png", "Benjamin.png", "Aleksandar.png"};
 
-    //private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Sorin.png"};
-
 
     /**
      * This Constructor creates a new food Element.
@@ -41,10 +40,16 @@ public class Food {
      */
     public Food(Snake snake, Wall wall, Food currentlyExistingRegularFood,
                 boolean isSpecialFood, String previousFoodType) {
+        int scoreValueMultiplierBasedOnDifficulty;
+        switch (StateManager.difficulty) {
+            case EASY -> scoreValueMultiplierBasedOnDifficulty = 1;
+            case MEDIUM -> scoreValueMultiplierBasedOnDifficulty = 2;
+            case HARD -> scoreValueMultiplierBasedOnDifficulty = 3;
+            default -> throw new IllegalStateException("Unexpected value: " + StateManager.difficulty);
+        }
         if (isSpecialFood) {
             this.isSpecialFood = true;
-            //TODO: multiply by difficulty level
-            this.scoreValue = SPECIAL_SCORE_VALUE;
+            this.scoreValue = SPECIAL_SCORE_VALUE * scoreValueMultiplierBasedOnDifficulty;
             // range: 18 - 36
             this.specialFoodTimeToLive = (int) (18 + (Math.random() * 18));
             do {
@@ -52,8 +57,7 @@ public class Food {
                 this.foodType = SPECIAL_FOOD_TYPES[foodTypeNumber];
             } while (Objects.equals(foodType, previousFoodType));
         } else {
-            //TODO: multiply by difficulty level
-            this.scoreValue = REGULAR_SCORE_VALUE;
+            this.scoreValue = REGULAR_SCORE_VALUE * scoreValueMultiplierBasedOnDifficulty;
             this.specialFoodTimeToLive = -1;
             do {
                 int foodTypeNumber = (int) (Math.random() * REGULAR_FOOD_TYPES.length);

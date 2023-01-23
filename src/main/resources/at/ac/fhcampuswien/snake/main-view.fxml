@@ -39,7 +39,7 @@
                 </FXCollections>
             </items>
             <value>
-                <String fx:value="Easy" />
+                <String fx:value="Medium" />
             </value>
         </ComboBox>
     </GridPane>
