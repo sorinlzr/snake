@@ -94,6 +94,8 @@ public class GameBoard {
      */
     private final Image snakeHead;
 
+    private final Image snakeBody;
+
     /**
      * Image containing the wall pattern
      */
@@ -112,6 +114,7 @@ public class GameBoard {
         this.score = 0;
 
         this.snakeHead = new Image("graphics/snake/head.png");
+        this.snakeBody = new Image("graphics/snake/body.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
 
         timeline = new Timeline(new KeyFrame(Duration.millis(difficulty.getRefreshTime()), e -> refreshGameBoard()));
@@ -276,6 +279,7 @@ public class GameBoard {
         }
 
         ImageView iv = new ImageView(snakeHead);
+        ImageView v = new ImageView(snakeBody);
         iv.setRotate(rotation);
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
@@ -283,10 +287,9 @@ public class GameBoard {
 
         gc.drawImage(rotatedImage, headPosition.getX(), headPosition.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
 
-        gc.setFill(Color.GREEN);
         for (int i = 1; i < snake.getSegments().size(); i++) {
             Position bodySegment = snake.getSegments().get(i);
-            gc.fillOval(bodySegment.getX(), bodySegment.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+            gc.drawImage(v.getImage(), bodySegment.getX(), bodySegment.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
     }
 
