@@ -24,9 +24,9 @@ public class Food {
 
     private int specialFoodTimeToLive;
 
-    private final static String[] REGULAR_FOOD_TYPES = new String[]{"Apple.png", "Bannana.png", "Cherry.png",
-            "Grape.png", "Lemon.png", "Orange.png", "Peach.png", "Pear.png", "Pineapple.png", "Plum.png",
-            "Strawberry.png", "Watermelon.png"};
+    private final static String[] REGULAR_FOOD_TYPES = new String[]{"1.png", "2.png", "3.png",
+            "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png",
+            "11.png", "12.png", "13.png", "14.png", "15.png"};
 
     private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Mathias.png", "Sorin.png",
             "Lukas.png", "Arik.png", "Benjamin.png", "Aleksandar.png"};

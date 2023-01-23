@@ -19,7 +19,7 @@ public class ScoreBoard {
     }
 
     public void drawScoreBoard(int score) {
-        this.gc.setFill(Color.web("61271d"));
+        this.gc.setFill(Color.web("4a148c"));
         this.gc.fillRect(0, 0, SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
         gc.setTextAlign(TextAlignment.RIGHT);
         gc.setTextBaseline(VPos.CENTER);
@@ -36,7 +36,7 @@ public class ScoreBoard {
             for (int i = duration; i >= 0; i--) {
                 int finalI = i;
                 Platform.runLater(() -> {
-                    this.gc.setFill(Color.web("61271d"));
+                    this.gc.setFill(Color.web("4a148c"));
                     this.gc.fillRect(0, 0, SCOREBOARD_WIDTH / 2, SCOREBOARD_HEIGHT);
                     if (finalI > 0) {
                         this.gc.setTextAlign(TextAlignment.LEFT);
