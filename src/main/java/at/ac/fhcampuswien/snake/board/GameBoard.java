@@ -13,14 +13,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -85,14 +83,13 @@ public class GameBoard {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     /**
      * Image containing the snake's head
      */
-    private final Image snakeHead;
+    private final Image snakeHeadUp;
+    private final Image snakeHeadDown;
+    private final Image snakeHeadLeft;
+    private final Image snakeHeadRight;
 
     private final Image snakeBody;
 
@@ -113,7 +110,10 @@ public class GameBoard {
         this.gc = gameBoardCanvas.getGraphicsContext2D();
         this.score = 0;
 
-        this.snakeHead = new Image("graphics/snake/head.png");
+        this.snakeHeadUp = new Image("graphics/snake/head_up.png");
+        this.snakeHeadDown = new Image("graphics/snake/head_down.png");
+        this.snakeHeadLeft = new Image("graphics/snake/head_left.png");
+        this.snakeHeadRight = new Image("graphics/snake/head_right.png");
         this.snakeBody = new Image("graphics/snake/body.png");
         this.wallPattern = new Image("graphics/wall/wall_pattern.png");
 
@@ -278,27 +278,19 @@ public class GameBoard {
     private void drawSnake(GraphicsContext gc) {
         gc.setFill(Color.BLUE);
         Position headPosition = snake.getSegments().get(0);
-
-        int rotation = 0;
+        Image head = snakeHeadUp;
 
         switch (snake.getDirection()) {
-            case RIGHT -> rotation = 90;
-            case DOWN -> rotation = 180;
-            case LEFT -> rotation = 270;
+            case RIGHT -> head = snakeHeadRight;
+            case DOWN -> head = snakeHeadDown;
+            case LEFT -> head = snakeHeadLeft;
         }
 
-        ImageView iv = new ImageView(snakeHead);
-        ImageView v = new ImageView(snakeBody);
-        iv.setRotate(rotation);
-        SnapshotParameters params = new SnapshotParameters();
-        params.setFill(Color.TRANSPARENT);
-        Image rotatedImage = iv.snapshot(params, null);
-
-        gc.drawImage(rotatedImage, headPosition.getX(), headPosition.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+        gc.drawImage(head, headPosition.getX(), headPosition.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
 
         for (int i = 1; i < snake.getSegments().size(); i++) {
             Position bodySegment = snake.getSegments().get(i);
-            gc.drawImage(v.getImage(), bodySegment.getX(), bodySegment.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
+            gc.drawImage(snakeBody, bodySegment.getX(), bodySegment.getY(), OBJECT_SIZE_MEDIUM, OBJECT_SIZE_MEDIUM);
         }
     }
 
@@ -397,7 +389,10 @@ public class GameBoard {
                     if (snake.isAlive()) {
                         isGamePaused = true;
 
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "If you return to the Start-Screen while playing the game,\nyou will lose all points.\nDo you really want to return to the Start-Screen?", ButtonType.YES, ButtonType.NO);
+                        Alert alert = new Alert(Alert.AlertType.WARNING, """
+                                If you return to the Start-Screen while playing the game,
+                                you will lose all points.
+                                Do you really want to return to the Start-Screen?""", ButtonType.YES, ButtonType.NO);
                         alert.showAndWait();
 
                         if (alert.getResult() == ButtonType.YES) {

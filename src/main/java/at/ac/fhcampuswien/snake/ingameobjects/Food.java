@@ -19,7 +19,6 @@ public class Food {
 
     private int scoreValue;
 
-    //TODO : Multiply the Score Value with the chosen Difficulty Level: EASY : *1 | MEDIUM : *2 | HARD : *3
     private final static int REGULAR_SCORE_VALUE = 1;
     private final static int SPECIAL_SCORE_VALUE = 3;
 
@@ -29,8 +28,8 @@ public class Food {
             "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png",
             "11.png", "12.png", "13.png", "14.png", "15.png"};
 
-    private final static String[] SPECIAL_FOOD_TYPES = new String[]{"Mathias.png", "Sorin.png",
-            "Lukas.png", "Arik.png", "Benjamin.png", "Aleksandar.png"};
+    private final static String[] SPECIAL_FOOD_TYPES = new String[]{"B1.png", "B2.png",
+            "B3.png", "B4.png", "B5.png", "B6.png"};
 
 
     /**
