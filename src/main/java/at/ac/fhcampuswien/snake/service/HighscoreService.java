@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,24 +23,12 @@ public class HighscoreService {
      * This method looks for an existing high score file on disk. If it does not exist - it creates one.
      *
      * @return file object that points to the file on disk.
-     * @throws URISyntaxException if the path is incorrect.
-     * @throws IOException        if the program can not read from file / process gets interrupted.
+     * @throws IOException if the program can not read from file / process gets interrupted.
      */
-    private static File getHighscoresFile() throws URISyntaxException, IOException {
+    private static File getHighscoresFile() throws IOException {
         String path = "src/main/resources/highscores.txt";
-        URL url = HighscoreService.class.getResource(path);
-        File highscoreFile;
-
-        if (url == null) {
-            highscoreFile = new File(path);
-            highscoreFile.createNewFile();
-        } else {
-            highscoreFile = new File(url.toURI());
-            if (!highscoreFile.exists()) {
-                highscoreFile.createNewFile();
-            }
-        }
-
+        File highscoreFile = new File(path);
+        highscoreFile.createNewFile();
         return highscoreFile;
     }
 
@@ -52,7 +38,7 @@ public class HighscoreService {
      * @param file The file to read from.
      * @return List of strings where each row represents a line in the file.
      */
-    private static List<String> getFileContent(File file) {
+    private static List<String> getFileContent(File file) throws IOException{
         List<String> ret = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -63,7 +49,8 @@ public class HighscoreService {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOG.error("Error reading the file content");
+            throw new IOException(e);
         }
 
         return ret;
@@ -96,12 +83,9 @@ public class HighscoreService {
             List<String> fileContent = getFileContent(highscoreFile);
             ret = getPlayerFromList(fileContent);
         } catch (IOException ex) {
-            LOG.error("Error reading from file on disk");
+            LOG.error("Error getting the saved players list");
             ex.printStackTrace();
-        } catch (URISyntaxException ex) {
-            LOG.error("Path to the high scores file is wrong");
         }
-
         return ret;
     }
 
@@ -155,10 +139,8 @@ public class HighscoreService {
             }
 
         } catch (IOException ex) {
-            LOG.error("Error reading from file on disk");
+            LOG.error("Error while saving the players list");
             ex.printStackTrace();
-        } catch (URISyntaxException ex) {
-            LOG.error("Path to the high scores file is wrong");
         }
     }
 

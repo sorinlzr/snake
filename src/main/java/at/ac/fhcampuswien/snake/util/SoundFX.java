@@ -28,7 +28,7 @@ public class SoundFX {
         playSoundFx(GAME_OVER_SOUND);
     }
 
-    public static void playSoundFx(String resourcePath) {
+    private static void playSoundFx(String resourcePath) {
         try {
             String path = Objects.requireNonNull(SoundFX.class.getResource(resourcePath)).toURI().toString();
             AudioClip audioClip = new AudioClip(path);

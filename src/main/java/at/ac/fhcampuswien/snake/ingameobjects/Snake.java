@@ -8,7 +8,6 @@ import java.util.List;
 import static at.ac.fhcampuswien.snake.util.Constants.*;
 
 
-//TODO implement DrawableObject
 public class Snake {
 
     private int length;
@@ -21,7 +20,6 @@ public class Snake {
         int initialLength = 0;
         Position initialPosition = new Position(GAME_BOARD_SIZE_MEDIUM / 2, GAME_BOARD_SIZE_MEDIUM / 2);
 
-        // TODO use KeyCode Enums instead of custom ones. KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT
         switch (initialDirection) {
             case UP -> {
                 direction = Direction.UP;
